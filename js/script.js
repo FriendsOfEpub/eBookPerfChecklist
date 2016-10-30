@@ -154,6 +154,10 @@ r(function() {
 		for (var i = 0; i < enable.length; i++) {
 			enable[i].disabled = false;
 		}
+		var uncheck = document.querySelectorAll('input[type="checkbox"]:checked');
+		for (var i = 0; i < uncheck.length; i++) {
+			uncheck[i].checked = false;
+		}
 	};
 	
 	// Toggle details
@@ -265,7 +269,7 @@ r(function() {
 	reset.addEventListener('click', resetChecklist, true);
 
 	for (var i = 0; i < summary.length; i++) {
-		summary[i].addEventListener('touchend', toggleDetails, false);
+//		summary[i].addEventListener('touchend', toggleDetails, false);
 		summary[i].addEventListener('click', toggleDetails, false);
 	};
 
@@ -291,11 +295,7 @@ r(function() {
 			isEscape = (e.keyCode == 27);
 		}
 		if (isEscape) {
-			var uncheck = document.querySelectorAll('input[type="checkbox"]:checked');
-			for (var i = 0; i < uncheck.length; i++) {
-				uncheck[i].checked = false;
 				resetChecklist();
-			}
 		}
 	};
 

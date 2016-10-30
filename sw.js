@@ -3,7 +3,7 @@
 'use strict';
 
 var config = {
-  version: 'blitzOptim_v0_2',
+  version: 'blitzOptim_v0_21',
   staticCacheItems: [
     '/assets/blitz-64.svg',
     '/assets/blitzOptim-decorations.svg',
