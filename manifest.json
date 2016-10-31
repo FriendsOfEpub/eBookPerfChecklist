@@ -18,7 +18,7 @@
       "sizes": "256x256",
       "type": "image/png"
     }],
-  "start_url": "index.html",
+  "start_url": "/eBookPerfChecklist/",
   "display": "standalone",
   "background_color": "#222222",
   "theme_color": "#222222"
