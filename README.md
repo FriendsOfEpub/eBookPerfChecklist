@@ -9,4 +9,4 @@ Please note it’s an [implementation of this medium article](https://medium.com
 
 It is part of the Blitz Project.
 
-Currentyly v.0.2 (buggy bungalow) and available [here](https://friendsofepub.github.io/eBookPerfChecklist/). 
+Currently v.0.22 (buggy bungalow) and available [on this page](https://friendsofepub.github.io/eBookPerfChecklist/). 
