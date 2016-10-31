@@ -269,7 +269,6 @@ r(function() {
 	reset.addEventListener('click', resetChecklist, true);
 
 	for (var i = 0; i < summary.length; i++) {
-//		summary[i].addEventListener('touchend', toggleDetails, false);
 		summary[i].addEventListener('click', toggleDetails, false);
 	};
 
