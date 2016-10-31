@@ -3,13 +3,13 @@
 'use strict';
 
 var config = {
-  version: 'blitzOptim_v0_26',
+  version: 'blitzOptim_v0_27',
   staticCacheItems: [
     '/eBookPerfChecklist/assets/blitz-64.svg',
     '/eBookPerfChecklist/assets/blitzOptim-decorations.svg',
     '/eBookPerfChecklist/css/styles.css',
     '/eBookPerfChecklist/js/script.js',
-    '/eBookPerfChecklist/offline/',
+    '/eBookPerfChecklist/offline/offline.html',
     '/eBookPerfChecklist/'
   ],
   cachePathPattern: /^\/(?:(20[0-9]{2}|css|assets|js)\/(.+)?)?$/,
