@@ -328,8 +328,8 @@ header {
   max-width: 42em;
 	margin: 0 auto 72px auto;
 	margin: 0 auto 7.2rem auto;
-  padding: 0 10px;
-  padding: 0 1rem;
+  padding: 0 20px;
+  padding: 0 2rem;
 }
 
 section {
@@ -341,8 +341,8 @@ section {
 .wrapper {
   max-width: 42em;
   margin: 0 auto;
-  padding: 0 10px;
-  padding: 0 1rem;
+  padding: 0 20px;
+  padding: 0 2rem;
 }
 
 form section:nth-child(odd) {
@@ -365,41 +365,13 @@ form section:nth-child(even) {
   padding: 96px 0;
 }
 
-/*
-.helper {
-	position: absolute;
-	top:-30px;
-	right: 20px;
-}
-
-.help-content {
-  box-sizing: border-box;
-  background-color: rgba(0, 0, 0, 0.95);
-  color: #FEFEFE;
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  -webkit-transform: translate3d(-50%, -50%, 0);
-  transform: translate3d(-50%, -50%, 0);
-  width: 100%;
-  height: 100vh;
-  margin: 0;
-  max-width: 100%;
-  max-height: 100vh;
-	font-size: 18px;
-	font-size: 1.8rem;
-	padding: 30px;
-	z-index: 20;
-}
-*/
-
 footer {
   max-width: 42em;
 	margin: 96px auto 0 auto;
 	margin: 9.6rem auto 0 auto;
 	text-align: center;
-  padding: 0 10px;
-  padding: 0 1rem;
+  padding: 0 20px;
+  padding: 0 2rem;
 }
 
 .header-icon {
@@ -460,6 +432,11 @@ p {}
 	list-style: none;
 	margin: 0;
 	padding: 0;
+}
+
+.help-content ul li {
+	margin-left: 1.25em;
+	text-indent: -1.25em;
 }
 
 .help-content ul li:before {
@@ -553,6 +530,9 @@ input:focus + .checker {
 }
 
 [type="reset"] {
+	-webkit-appearance: none;
+	-moz-appearance: none;
+	appearance: none;
   color: #FEFEFE;
   font-weight: 600;
   border: 2px solid currentColor;
@@ -615,8 +595,6 @@ input:focus + .checker {
   align-content: center;
   box-sizing: border-box;
 	position: fixed;
-	position: -webkit-sticky;
-	position: sticky;
 	bottom: 0;
 	left: 0;
 	height: auto;
