@@ -3,7 +3,7 @@
 'use strict';
 
 var config = {
-  version: 'blitzOptim_v0_27',
+  version: 'blitzOptim_v0_28',
   staticCacheItems: [
     '/eBookPerfChecklist/assets/blitz-64.svg',
     '/eBookPerfChecklist/assets/blitzOptim-decorations.svg',

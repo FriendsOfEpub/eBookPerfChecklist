@@ -278,7 +278,6 @@ r(function() {
 		if (disabled) {
 			button.setAttribute('disabled', 'disabled');
 		}
-		button.addEventListener('touchend', checkChildren, true);
 		button.addEventListener('click', checkChildren, true);
 	}
 	
