@@ -45,8 +45,8 @@
     "run-sequence": "^1.2.2",
     "sassdoc": "^2.1.20",
     "scss-lint": "0.0.0",
-    "sw-precache": "^4.1.0",
-    "sw-toolbox": "^3.3.0",
+    "sw-precache": "^4.2.1",
+    "sw-toolbox": "^3.4.0",
     "yarn": "^0.16.1"
   },
   "dependencies": {

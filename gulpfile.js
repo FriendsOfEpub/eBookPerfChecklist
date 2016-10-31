@@ -34,7 +34,9 @@ var gulp = require('gulp'),
 // precache and toolbox
   swPrecache = require('sw-precache'),
 // gulp-md-template
-  template = require('gulp-md-template');;
+  template = require('gulp-md-template'),
+// precache and toolbox
+  swPrecache = require('sw-precache');
 
 //var key = '';
 var site = 'https://caraya.github.io/athena-template/';
@@ -458,6 +460,24 @@ gulp.task('clean', function() {
     'dist/',
     '.tmp'
   ]);
+});
+
+gulp.task('service-worker', function(callback) {
+  swPrecache.write(path.join(rootDir, 'service-worker.js'), {
+    staticFileGlobs: [
+      rootDir + '*.html',
+      rootDir + 'js/**/*.js',
+      rootDir + 'css/*.css',
+      rootDir + 'apple-touch-icon.png',
+      rootDir + 'img/**/*.{svg,png,jpg,gif}'
+//    ],
+//    importScripts: [
+//      './node_modules/sw-toolbox/sw-toolbox.js',
+//      './js/toolbox-scripts.js'
+    ],
+    stripPrefix: rootDir
+  }, callback);
+
 });
 
 gulp.task('service-worker', function(callback) {
