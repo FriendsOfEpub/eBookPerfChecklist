@@ -3,21 +3,36 @@
 r(function() {
 	// VARIABLES
 	
-	var summary = document.getElementsByClassName('summary'),
+	var form = document.getElementsByTagName('form')[0],
 			details = document.getElementsByClassName('details'),
 			checkAll = document.getElementsByClassName('checkAll'),
-			label = document.getElementsByTagName('label'),
 			boxes = document.querySelectorAll('input[type="checkbox"]'),
-
-			reset = document.querySelector('input[type="reset"]'),
 			
-			helper = document.getElementById('helper'),
-			help = document.getElementById('help'),
+			howTo = document.createElement('section'),
+			helper = document.createElement('button'),
+			help = document.createElement('div'),
 			
 			bar = document.getElementById('progress-inner'),
 			count = boxes.length,
 			checked = 0,
 			progress = 0;
+	
+	// POLYFILLS
+	
+	if (!Element.prototype.matches) {
+		Element.prototype.matches = 
+			Element.prototype.matchesSelector || 
+			Element.prototype.mozMatchesSelector ||
+			Element.prototype.msMatchesSelector || 
+			Element.prototype.oMatchesSelector || 
+			Element.prototype.webkitMatchesSelector ||
+			function(s) {
+      	var matches = (this.document || this.ownerDocument).querySelectorAll(s),
+				i = matches.length;
+				while (--i >= 0 && matches.item(i) !== this) {}
+					return i > -1;            
+			};
+	}
 	
 	// FUNCTIONS
 
@@ -124,16 +139,13 @@ r(function() {
 	};
 
 	// Store input when checked
-	function storeCheckbox(box) {
+	function initCheckbox(box) {
 		// storageID = name
 		var storageId = "blitzOptim_" + box.getAttribute("value");
 		// We check if an value is already stored
 		var oldVal = storage.get(storageId);
-		
 		// check if old value stored
 		box.checked = oldVal === "true" ? true : false;
-
-		// add listener change, count # of checked, store name + progress
 		box.addEventListener("change", function() {
 			updateProgress();
 			storage.set('blitzOptim_barWidth', progress);
@@ -160,35 +172,28 @@ r(function() {
 		}
 	};
 	
+	function toggleAria(elt) {
+		elt.getAttribute('aria-hidden') === 'true' ? elt.setAttribute('aria-hidden', 'false') : elt.setAttribute('aria-hidden', 'true');
+	}
+	
 	// Toggle details
-	function toggleDetails(e) {
-		e.preventDefault();
-		// toggle class open on summary
-		this.classList.toggle('open');
+	function toggleDetails(elt) {
+		elt.classList.toggle('open');
 		// toggle class hidden + aria for details = nextElementSibling
-		this.nextElementSibling.classList.toggle('hidden');		
-		if (this.nextElementSibling.getAttribute("aria-hidden") === "true") {
-			this.nextElementSibling.setAttribute('aria-hidden', 'false');
-		} else {
-			this.nextElementSibling.setAttribute('aria-hidden', 'true');
-		}
+		elt.nextElementSibling.classList.toggle('hidden');		
+		toggleAria(elt.nextElementSibling);
 	};
 	
 	function toggleHelp(e) {
 		e.preventDefault();
 		help.classList.toggle('hidden');
-		if (help.getAttribute('aria-hidden') === 'true') {
-			help.setAttribute('aria-hidden', 'false');
-		}	else {
-			help.setAttribute('aria-hidden', 'true');
-		}
+		toggleAria(help);
 	};
 	
 	// Check all inputs for SVG, JS and anims
-	function checkChildren(e) {
-		e.preventDefault();
+	function checkChildren(elt) {
 		// check if SVG, JS or anim
-		var checkScope = this.getAttribute('id');
+		var checkScope = elt.getAttribute('id');
 		// get all inputs in the scope
 		var toCheck = document.querySelectorAll('input[name="'+checkScope+'"]');
 		for (var j = 0; j < toCheck.length; j++) {
@@ -202,9 +207,9 @@ r(function() {
 			storage.set('blitzOptim_barWidth', progress);
 		}
 		// disable button
-		this.setAttribute('disabled', 'disabled');
+		elt.setAttribute('disabled', 'disabled');
 		// store value of button
-		storage.set("blitzOptim_" + this.getAttribute("id") + "_button", "true");
+		storage.set("blitzOptim_" + elt.getAttribute("id") + "_button", "true");
 		// Maybe remove eventListener and re-add when reset?
 	}
 
@@ -229,73 +234,104 @@ r(function() {
 		updateProgress();
 	};
 
-
-	// EVENT LISTENERS
-
+  // Init checkboxes -> retrive stored value and check
 	for (var i = 0; i < count; i++) {
 		var box = boxes[i];
 		if (box.hasAttribute("value")) {
-			storeCheckbox(box);
-			
-			// Add in storeCheckbox function ?
-			box.addEventListener('keydown', function(e) {
-		  	if (e.keyCode == 13) {
-		  		e.preventDefault();
-					var updateChange = new Event('change');
-		  		if (this.checked) {
-		  			this.checked = false;
-		  		} else {
-		  			this.checked = true;
-		  		};
-		  		this.dispatchEvent(updateChange);
-		  	} else if (e.keyCode == 32) {
-		  		// = toggleDetails() so design a common function
-					e.preventDefault();
-					var parentEl = this.parentElement;
-					var detail = parentEl.getElementsByClassName('details')[0];
-					detail.previousElementSibling.classList.toggle('open');
-					detail.classList.toggle('hidden');
-					if (detail.getAttribute('aria-hidden') === 'true') {
-						detail.setAttribute('aria-hidden', 'false');
-					} else {
-						detail.setAttribute('aria-hidden', 'true');				
-					}
-				}
-			});
+			initCheckbox(box);			
 		}
 	};
-	
-	reset.addEventListener('touchend', resetChecklist, true);
-	reset.addEventListener('click', resetChecklist, true);
 
-	for (var i = 0; i < summary.length; i++) {
-		summary[i].addEventListener('click', toggleDetails, false);
-	};
-
+	// Disable checkAll buttons from previous session
 	for (var i = 0; i < checkAll.length; i++) {
 		var button = checkAll[i];
 		var disabled = storage.get("blitzOptim_" + button.getAttribute("id") + "_button");
 		if (disabled) {
 			button.setAttribute('disabled', 'disabled');
 		}
-		button.addEventListener('click', checkChildren, true);
-	}
+	};
 	
-	helper.addEventListener('touchend', toggleHelp, false);
+	// Inject help
+	howTo.id = 'how-to';
+	helper.type = 'button';
+	helper.className = 'helper';
+	helper.id = 'helper';
+	helper.innerText = 'Help';
+	howTo.appendChild(helper);
+	help.classList.add('help-content', 'hidden');
+	help.id = 'help';
+	help.setAttribute('aria-hidden', 'true');
+	help.setAttribute('aria-live', 'assertive');
+	help.innerHTML = '<div class="wrapper">'
+		+ '<p>If you’re using a mouse:</p>'
+  	+ '<li>click the checkbox to check</li>'
+  	+ '<li>click the label to display details</li>'
+  	+ '<li>click the “Thanks button” if you don’t need SVG, JS or animations</li>'
+  	+ '<li>click reset to… reset the checklist</li>'
+  	+ '</ul>'
+  	+ '<p>If you’re using a keyboard:</p>'
+  	+ '<ul>'
+  	+ '<li>press “tab” to navigate items</li>'
+  	+ '<li>press “enter” to check</li>'
+  	+ '<li>press “space” to display details</li>'
+  	+ '<li>press “backspace” to reset the checklist</li>'
+  	+ '</ul>'
+  	+ '<p>Don’t worry, your checklist is autosaved: you can close this website, your current checklist will be retrieved when reopened.</p>'	
+  	+ '<p>Finally, you can install this web-app on iOS and Android. And if you’re using Chrome, Firefox or Opera, it will also be available offline.</p>'
+  	+ '</div>';
+	howTo.appendChild(help);
+	document.body.insertBefore(howTo, document.getElementsByTagName('main')[0]);
+	
+	// Event Listeners 
+	
 	helper.addEventListener('click', toggleHelp, false);
 	
-	document.onkeydown = function(e) {
-		e = e || window.event;
-		var isEscape = false;
-		if ("key" in e) {
-			isEscape = (e.key == "Escape" || e.key == "Esc");
+	form.addEventListener('click', function(e) {
+		var elt = e.target;
+		if (elt.classList.contains('summary')) {
+			e.preventDefault();
+			toggleDetails(elt);
+		} else if (elt.matches('.summary > *')) {
+			e.preventDefault();
+			toggleDetails(elt.parentElement);
+		} else if (elt.classList.contains('checkAll')) {
+			checkChildren(elt);
+		} else if (elt.type === 'reset') {
+			resetChecklist();
+		} else if (elt.classList.contains('details-para')) {
+			e.preventDefault();
 		} else {
-			isEscape = (e.keyCode == 27);
+			return;
 		}
-		if (isEscape) {
-				resetChecklist();
+	});
+	
+	document.addEventListener('keydown', function(e) {
+		var active = document.activeElement;
+		var isCheckbox = (active.type === 'checkbox');
+		var isBackspace = (e.key === 'Backspace' || e.keyCode === 8);
+		var isEnter = (e.key === 'Enter' || e.keyCode === 13);
+		var isSpacebar = (e.key === 'Spacebar' || e.keyCode === 32);
+		
+		if (isBackspace) {
+			resetChecklist();
+			active.blur();
+		} else if (isCheckbox && isEnter) {
+			e.preventDefault();
+			var updateChange = new Event('change');
+		  if (active.checked) {
+		  	active.checked = false;
+		  } else {
+		  	active.checked = true;
+		  };
+		  active.dispatchEvent(updateChange);
+		} else if (isCheckbox && isSpacebar) {
+			e.preventDefault();
+			var pushActive = active.parentElement.getElementsByClassName('summary')[0];			
+			toggleDetails(pushActive);
+		} else {
+			return;
 		}
-	};
+	});
 
 });
 function r(f){/in/.test(document.readyState)?setTimeout('r('+f+')',9):f()}																	

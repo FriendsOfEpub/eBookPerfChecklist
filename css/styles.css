@@ -382,6 +382,7 @@ footer {
 	height: 64px;
 	height: 6.4rem;
 	display: block;
+	opacity: 0.65;
 }
 
 h1 {
