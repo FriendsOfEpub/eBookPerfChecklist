@@ -48,20 +48,20 @@ And that’s it.
 
 eBookPerf checklist, a Blitz optimization tool to help you achieve great performance in eBooks
 
-Copyright (C) 2016 Jiminy Panoz
+Copyright (C) 2016–present Jiminy Panoz
 
-This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+This program is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
 
-This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more details.
 
-You should have received a copy of the GNU General Public License along with this program.  If not, see [http://www.gnu.org/licenses/](http://www.gnu.org/licenses/).
+You should have received a copy of the GNU Lesser General Public License along with this program.  If not, see [http://www.gnu.org/licenses/](http://www.gnu.org/licenses/).
 
-### What GPL3 actually implies
+### What LGPL3 actually implies
 
-You can fork this repo and make your own checklist/web app, say for Quality Assurance, InDesign’s export cleaning, metadata, etc., but it should then be released with a GPL3 license. Attribution is needed in any case.
+You can fork this repo and make your own checklist/web app, say for Quality Assurance, InDesign’s export cleaning, metadata, etc. You can use it in commercial projets but your modifications to this specific part (consider this a library) should then be released with a LGPL3 license. Attribution is needed in any case.
 
-### Why GPL3 OMG it’s not MIT like the Blitz Framework!
+### Why LGPL3 OMG it’s not MIT like the Blitz Framework!
 
 The eBook dev ecosystem is a nightmare, we need eBook tools. And fast!
 
-Very few people actually release those tools. Now it’s just a checklist so why would you want to keep it closed source, huh?
+Very few people actually release those tools. Now it’s just a checklist so why would you want to keep this closed source, huh?
