@@ -1,4 +1,12 @@
-/* It’s not elegant nor uber optimized but it was erratically designed in the span of a few weeks and gets the job done. Please feel free to improve. Thanks. */
+/* It’s not elegant nor uber optimized but it was erratically designed in the span of a few weeks and gets the job done. Please feel free to improve. Thanks. 
+
+BUGS: 
+
+		Keyboard nav
+		- reset -> tab starts on footer link in MS Edge		
+		- focus() checks checkbox in Firefox if enter (but not if spacebar)
+
+																										*/
 
 r(function() {
 	// VARIABLES
@@ -384,6 +392,7 @@ r(function() {
 	});
 	
 	// Must use keyup as keydown won’t work in firefox for spacebar
+if (isFirefox) {
 	document.addEventListener('keyup', function(e) {
 		var active = document.activeElement;
 		var isCheckbox = (active.type === 'checkbox');
@@ -395,7 +404,6 @@ r(function() {
 			resetChecklist();
 			active.blur();
 		} else if (isCheckbox && pressEnter) {
-			e.preventDefault();
 			var updateChange = new Event('change');
 		  if (active.checked) {
 		  	active.checked = false;
@@ -403,6 +411,7 @@ r(function() {
 		  	active.checked = true;
 		  };
 		  active.dispatchEvent(updateChange);
+			e.preventDefault();
 		} else if (isCheckbox && pressSpacebar) {
 			e.preventDefault();
 			var pushActive = active.parentElement.getElementsByClassName('summary')[0];			
@@ -411,6 +420,36 @@ r(function() {
 			return;
 		}
 	});
+} else {
+	document.addEventListener('keydown', function(e) {
+		var active = document.activeElement;
+		var isCheckbox = (active.type === 'checkbox');
+		var pressBackspace = (e.key === 'Backspace' || e.keyCode === 8);
+		var pressEnter = (e.key === 'Enter' || e.keyCode === 13);
+		var pressSpacebar = (e.key === 'Spacebar' || e.keyCode === 32);
+		
+		if (pressBackspace) {
+			resetChecklist();
+			active.blur();
+		} else if (isCheckbox && pressEnter) {
+			var updateChange = new Event('change');
+		  if (active.checked) {
+		  	active.checked = false;
+		  } else {
+		  	active.checked = true;
+		  };
+		  active.dispatchEvent(updateChange);
+			e.preventDefault();
+			e.stopImmediatePropagation();	// Need this for MS Edge
+		} else if (isCheckbox && pressSpacebar) {
+			e.preventDefault();
+			var pushActive = active.parentElement.getElementsByClassName('summary')[0];			
+			toggleDetails(pushActive);
+		} else {
+			return;
+		}
+	});
+}
 
 });
 function r(f){/in/.test(document.readyState)?setTimeout('r('+f+')',9):f()}																	
