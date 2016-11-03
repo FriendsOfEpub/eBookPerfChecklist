@@ -436,13 +436,13 @@ p {}
 }
 
 .help-content ul li {
-	margin-left: 1.25em;
-	text-indent: -1.25em;
+	margin-left: 1em;
 }
 
 .help-content ul li:before {
 	content: "×";
-	margin-right: 0.5em;
+	position: relative;
+	left: -0.5em;
 }
 
 .details {

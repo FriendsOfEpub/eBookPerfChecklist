@@ -20,6 +20,8 @@ r(function() {
 			count = boxes.length,
 			checked = 0,
 			progress = 0;
+			
+	var isFirefox = false;
 
 	// POLYFILLS
 	
@@ -153,8 +155,8 @@ r(function() {
 	};
 	// Shortcut for body
 	function scrollTop() {
-	  if (navigator.userAgent.toLowerCase().indexOf('firefox') > -1) {
-     scrollTo(document.getElementsByTagName('html')[0], 0, 600);	// If firefox -> html (WTF?!?)
+	  if (isFirefox) {
+    	scrollTo(document.getElementsByTagName('html')[0], 0, 600);	// If firefox -> html (WTF?!?)
 		} else {
 			scrollTo(document.body, 0, 600);
 		}
@@ -255,11 +257,19 @@ r(function() {
 		} else {
 			focusNoScroll(nextInput);
 		}
-		scrollTo(document.body, nextSection.offsetTop, 600);
+		if (isFirefox) {
+			scrollTo(document.getElementsByTagName('html')[0], nextSection.offsetTop, 600);
+		} else {
+			scrollTo(document.body, nextSection.offsetTop, 600);
+		}
 	};
 
 	// INIT (run on doc Ready)
-		
+	
+	if (navigator.userAgent.toLowerCase().indexOf('firefox') > -1) {
+		isFirefox = true;
+	}
+	
 	// Adding js-enabled to body (for details)
 	document.getElementsByTagName('body')[0].classList.add('js-enabled');
 		
@@ -313,7 +323,7 @@ r(function() {
 		helper.type = 'button';
 		helper.className = 'helper';
 		helper.id = 'helper';
-		helper.innerText = 'Help';
+		helper.innerHTML = 'Help';
 		howTo.appendChild(helper);
 		
 		// config help div then add in section
@@ -323,6 +333,7 @@ r(function() {
 		help.setAttribute('aria-live', 'assertive');
 		help.innerHTML = '<div class="wrapper">'
 			+ '<p>If you’re using a mouse:</p>'
+			+ '<ul>'
   		+ '<li>click the checkbox to check</li>'
   		+ '<li>click the label to display details</li>'
   		+ '<li>click the “Thanks button” if you don’t need SVG, JS or animations</li>'
@@ -372,7 +383,8 @@ r(function() {
 		}
 	});
 	
-	document.addEventListener('keydown', function(e) {
+	// Must use keyup as keydown won’t work in firefox for spacebar
+	document.addEventListener('keyup', function(e) {
 		var active = document.activeElement;
 		var isCheckbox = (active.type === 'checkbox');
 		var pressBackspace = (e.key === 'Backspace' || e.keyCode === 8);
