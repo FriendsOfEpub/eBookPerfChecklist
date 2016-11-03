@@ -218,6 +218,12 @@ r(function() {
 		toggleAria(help);
 	};
 	
+	function focusNoScroll(el) {
+		var x = window.scrollX, y = window.scrollY;
+		el.focus();
+		window.scrollTo(x, y);
+	}
+	
 	// Check all inputs for SVG, JS and anims
 	function checkChildren(trigger) {
 		// check if SVG, JS or anim
@@ -241,9 +247,16 @@ r(function() {
 		
 		// scroll to next section
 		var currentSection = getClosest(trigger, 'section');
-		var nextSection = currentSection.nextElementSibling;
+		var nextSection = currentSection.nextElementSibling;		
+		var nextButton = nextSection.querySelector('.checkAll');
+		var nextInput = nextSection.getElementsByTagName('input')[0];
+		if (nextButton) {
+			focusNoScroll(nextButton);
+		} else {
+			focusNoScroll(nextInput);
+		}
 		scrollTo(document.body, nextSection.offsetTop, 600);
-	}
+	};
 
 	// INIT (run on doc Ready)
 		
