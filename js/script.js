@@ -1,12 +1,4 @@
-/* It’s not elegant nor uber optimized but it was erratically designed in the span of a few weeks and gets the job done. Please feel free to improve. Thanks. 
-
-BUGS: 
-
-		Keyboard nav
-		- reset -> tab starts on footer link in MS Edge		
-		- focus() checks checkbox in Firefox if enter (but not if spacebar)
-
-																										*/
+/* It’s not elegant nor uber optimized but it was erratically designed in the span of a few weeks and gets the job done. Please feel free to improve. Thanks. */
 
 r(function() {
 	// VARIABLES
@@ -164,9 +156,9 @@ r(function() {
 	// Shortcut for body
 	function scrollTop() {
 	  if (isFirefox) {
-    	scrollTo(document.getElementsByTagName('html')[0], 0, 600);	// If firefox -> html (WTF?!?)
+    	scrollTo(document.getElementsByTagName('html')[0], form.offsetTop, 600);	// If firefox -> html (WTF?!?)
 		} else {
-			scrollTo(document.body, 0, 600);
+			scrollTo(document.body, form.offsetTop, 600);
 		}
 	};
 
@@ -193,8 +185,6 @@ r(function() {
 		storage.clear();
 		//set width of progress bar to 0
 		barHandler(0);
-		// scroll to top
-		scrollTop();
 		// reenable buttons for SVG, JS and anims
 		var enable = document.querySelectorAll('button[disabled]');
 		for (var i = 0; i < enable.length; i++) {
@@ -205,6 +195,9 @@ r(function() {
 		for (var i = 0; i < uncheck.length; i++) {
 			uncheck[i].checked = false;
 		}
+		// scroll to top
+		focusNoScroll(document.querySelector('input[name]'));
+		scrollTop();
 	};
 	
 	function toggleAria(el) {
@@ -437,7 +430,6 @@ if (isFirefox) {
 		
 		if (pressBackspace) {
 			resetChecklist();
-			active.blur();
 		} else if (isCheckbox && pressEnter) {
 			e.preventDefault();
 			var updateChange = new Event('change');
