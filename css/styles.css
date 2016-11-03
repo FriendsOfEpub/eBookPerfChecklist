@@ -543,7 +543,7 @@ input:focus + .checker {
   padding: 10px 15px;
 	padding: 1rem 1.5rem;
 	line-height: 1;
-	margin: 0;
+	margin: 0 0 0 auto;
 	vertical-align: middle;
 	cursor: pointer;
 	transition: all 500ms;
@@ -672,4 +672,22 @@ h2:before {
 
 #qa-heading:before {
 	background-position: -224px 0;
+}
+
+@supports (mix-blend-mode: difference) {
+	#progress-inner:after {
+	  font-weight: 600;
+		font-size: 24px;
+		font-size: 2.4rem;
+		line-height: 1;
+		color: #FDFDFD;
+		position: relative;
+		top: 50%;
+		transform: translateY(-50%);
+		left: 10px;
+		left: 1rem;
+		display: block;
+		content: attr(data-width);
+		mix-blend-mode: difference;
+	}
 }

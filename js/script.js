@@ -11,12 +11,16 @@ r(function() {
 			howTo = document.createElement('section'),
 			helper = document.createElement('button'),
 			help = document.createElement('div'),
+	
+			controls = document.getElementById('controls'),
+			barWrap = document.createElement('div'),
+			bar = document.createElement('div'),
+			textProgress = document.createElement('span'),
 			
-			bar = document.getElementById('progress-inner'),
 			count = boxes.length,
 			checked = 0,
 			progress = 0;
-	
+
 	// POLYFILLS
 	
 	// matches 
@@ -120,6 +124,12 @@ r(function() {
 		return null;
 	};
 
+	// barHandler = set width and data-width for progress bar
+	function barHandler(widthPer) {
+		bar.style.width = widthPer + "%";
+		bar.dataset.width = widthPer + "%";
+	}
+	
   // Update Progress Bar
 	function updateProgress() {
 	  // Check number of checked inputs
@@ -127,7 +137,7 @@ r(function() {
 		// Compute percentage for the progress bar
 		progress = parseInt(((checked / count) * 100), 10);
 		// Update progress bar
-		bar.style.width = progress + "%";
+		barHandler(progress);
 	};
   
 	// Scroll to + Top
@@ -172,7 +182,7 @@ r(function() {
 		// clear storage
 		storage.clear();
 		//set width of progress bar to 0
-		bar.style.width = "0";
+		barHandler(0);
 		// scroll to top
 		scrollTop();
 		// reenable buttons for SVG, JS and anims
@@ -247,16 +257,23 @@ r(function() {
 		detail.setAttribute('aria-hidden', 'true');
 		detail.setAttribute('aria-live', 'polite');
 	};
+	
+	// Create Progress bar
+	barWrap.id = 'progress';
+	bar.id = 'progress-inner';
+	barWrap.appendChild(bar);
+	controls.insertBefore(barWrap, controls.firstChild);
 
 	// Get previous state and update progress bar
 	var retrievedProgress = storage.get('blitzOptim_barWidth');
 	if (retrievedProgress) {
-		bar.style.width = retrievedProgress + "%";
+		barHandler(retrievedProgress);
 	} else {
-	  // Doesn’t work AS-IS
+	  // Won’t work without setTimeout
 	  setTimeout(function() {
 			updateProgress();
-		}, 200);
+			storage.set('blitzOptim_barWidth', progress);
+		}, 50);
 	};
 
   // Init checkboxes -> retrive stored value and check
