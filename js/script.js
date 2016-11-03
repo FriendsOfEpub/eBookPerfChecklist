@@ -19,6 +19,7 @@ r(function() {
 	
 	// POLYFILLS
 	
+	// matches 
 	if (!Element.prototype.matches) {
 		Element.prototype.matches = 
 			Element.prototype.matchesSelector || 
@@ -34,8 +35,6 @@ r(function() {
 			};
 	}
 	
-	// FUNCTIONS
-
 	// localStorage with cookie fallback
 	var storage = (function() {
 		// Checking if localStorage is supported
@@ -108,7 +107,20 @@ r(function() {
 		};
 	})();
   
-  // Count number of checked inputs
+	// FUNCTIONS
+	
+  // closest "à la jQuery"
+  
+  var getClosest = function (elem, tag) {
+    for (; elem && elem !== document && elem.nodeType === 1; elem = elem.parentNode) {
+    	if (elem.tagName.toLowerCase() === tag) {
+      	return elem;
+      }
+    }
+		return null;
+	};
+
+  // Update Progress Bar
 	function updateProgress() {
 	  // Check number of checked inputs
 		checked = document.querySelectorAll('input[type="checkbox"]:checked').length;
@@ -138,14 +150,16 @@ r(function() {
 		}
 	};
 
-	// Store input when checked
+	// Init input when checked
 	function initCheckbox(box) {
 		// storageID = name
 		var storageId = "blitzOptim_" + box.getAttribute("value");
 		// We check if an value is already stored
 		var oldVal = storage.get(storageId);
-		// check if old value stored
+		// add true/false for checked attribute
 		box.checked = oldVal === "true" ? true : false;
+		
+		// add eventListener change for each checkbox
 		box.addEventListener("change", function() {
 			updateProgress();
 			storage.set('blitzOptim_barWidth', progress);
@@ -166,34 +180,38 @@ r(function() {
 		for (var i = 0; i < enable.length; i++) {
 			enable[i].disabled = false;
 		}
+		// force uncheck because iOS WebView
 		var uncheck = document.querySelectorAll('input[type="checkbox"]:checked');
 		for (var i = 0; i < uncheck.length; i++) {
 			uncheck[i].checked = false;
 		}
 	};
 	
-	function toggleAria(elt) {
-		elt.getAttribute('aria-hidden') === 'true' ? elt.setAttribute('aria-hidden', 'false') : elt.setAttribute('aria-hidden', 'true');
-	}
-	
-	// Toggle details
-	function toggleDetails(elt) {
-		elt.classList.toggle('open');
-		// toggle class hidden + aria for details = nextElementSibling
-		elt.nextElementSibling.classList.toggle('hidden');		
-		toggleAria(elt.nextElementSibling);
+	function toggleAria(el) {
+		if (el.getAttribute('aria-hidden') === 'true') {
+			el.setAttribute('aria-hidden', 'false');
+		} else {
+			el.setAttribute('aria-hidden', 'true');
+		}
 	};
 	
-	function toggleHelp(e) {
-		e.preventDefault();
+	// Toggle details
+	function toggleDetails(trigger) {
+		var detail = trigger.nextElementSibling;
+		trigger.classList.toggle('open');
+		detail.classList.toggle('hidden');		
+		toggleAria(detail);
+	};
+	
+	function toggleHelp() {
 		help.classList.toggle('hidden');
 		toggleAria(help);
 	};
 	
 	// Check all inputs for SVG, JS and anims
-	function checkChildren(elt) {
+	function checkChildren(trigger) {
 		// check if SVG, JS or anim
-		var checkScope = elt.getAttribute('id');
+		var checkScope = trigger.getAttribute('id');
 		// get all inputs in the scope
 		var toCheck = document.querySelectorAll('input[name="'+checkScope+'"]');
 		for (var j = 0; j < toCheck.length; j++) {
@@ -207,10 +225,14 @@ r(function() {
 			storage.set('blitzOptim_barWidth', progress);
 		}
 		// disable button
-		elt.setAttribute('disabled', 'disabled');
+		trigger.setAttribute('disabled', 'disabled');
 		// store value of button
-		storage.set("blitzOptim_" + elt.getAttribute("id") + "_button", "true");
-		// Maybe remove eventListener and re-add when reset?
+		storage.set("blitzOptim_" + trigger.getAttribute("id") + "_button", "true");
+		
+		// scroll to next section
+		var currentSection = getClosest(trigger, 'section');
+		var nextSection = currentSection.nextElementSibling;
+		scrollTo(document.body, nextSection.offsetTop, 600);
 	}
 
 	// INIT (run on doc Ready)
@@ -220,9 +242,10 @@ r(function() {
 		
 	// Hide details
 	for (var i = 0; i < details.length; i++) {
-		details[i].classList.add('hidden');
-		details[i].setAttribute('aria-hidden', 'true');
-		details[i].setAttribute('aria-live', 'polite');
+		var detail = details[i];
+		detail.classList.add('hidden');
+		detail.setAttribute('aria-hidden', 'true');
+		detail.setAttribute('aria-live', 'polite');
 	};
 
 	// Get previous state and update progress bar
@@ -231,7 +254,9 @@ r(function() {
 		bar.style.width = retrievedProgress + "%";
 	} else {
 	  // Doesn’t work AS-IS
-		updateProgress();
+	  setTimeout(function() {
+			updateProgress();
+		}, 200);
 	};
 
   // Init checkboxes -> retrive stored value and check
@@ -253,33 +278,39 @@ r(function() {
 	
 	// Inject help
 	howTo.id = 'how-to';
-	helper.type = 'button';
-	helper.className = 'helper';
-	helper.id = 'helper';
-	helper.innerText = 'Help';
-	howTo.appendChild(helper);
-	help.classList.add('help-content', 'hidden');
-	help.id = 'help';
-	help.setAttribute('aria-hidden', 'true');
-	help.setAttribute('aria-live', 'assertive');
-	help.innerHTML = '<div class="wrapper">'
-		+ '<p>If you’re using a mouse:</p>'
-  	+ '<li>click the checkbox to check</li>'
-  	+ '<li>click the label to display details</li>'
-  	+ '<li>click the “Thanks button” if you don’t need SVG, JS or animations</li>'
-  	+ '<li>click reset to… reset the checklist</li>'
-  	+ '</ul>'
-  	+ '<p>If you’re using a keyboard:</p>'
-  	+ '<ul>'
-  	+ '<li>press “tab” to navigate items</li>'
-  	+ '<li>press “enter” to check</li>'
-  	+ '<li>press “space” to display details</li>'
-  	+ '<li>press “backspace” to reset the checklist</li>'
-  	+ '</ul>'
-  	+ '<p>Don’t worry, your checklist is autosaved: you can close this website, your current checklist will be retrieved when reopened.</p>'	
-  	+ '<p>Finally, you can install this web-app on iOS and Android. And if you’re using Chrome, Firefox or Opera, it will also be available offline.</p>'
-  	+ '</div>';
-	howTo.appendChild(help);
+	
+		// config button then add in section
+		helper.type = 'button';
+		helper.className = 'helper';
+		helper.id = 'helper';
+		helper.innerText = 'Help';
+		howTo.appendChild(helper);
+		
+		// config help div then add in section
+		help.classList.add('help-content', 'hidden');
+		help.id = 'help';
+		help.setAttribute('aria-hidden', 'true');
+		help.setAttribute('aria-live', 'assertive');
+		help.innerHTML = '<div class="wrapper">'
+			+ '<p>If you’re using a mouse:</p>'
+  		+ '<li>click the checkbox to check</li>'
+  		+ '<li>click the label to display details</li>'
+  		+ '<li>click the “Thanks button” if you don’t need SVG, JS or animations</li>'
+  		+ '<li>click reset to… reset the checklist</li>'
+  		+ '</ul>'
+  		+ '<p>If you’re using a keyboard:</p>'
+  		+ '<ul>'
+  		+ '<li>press “tab” to navigate items</li>'
+  		+ '<li>press “enter” to check</li>'
+  		+ '<li>press “space” to display details</li>'
+  		+ '<li>press “backspace” to reset the checklist</li>'
+  		+ '</ul>'
+  		+ '<p>Don’t worry, your checklist is autosaved: you can close this website, your current checklist will be retrieved when reopened.</p>'	
+  		+ '<p>Finally, you can install this web-app on iOS and Android. And if you’re using Chrome, Firefox or Opera, it will also be available offline.</p>'
+  		+ '</div>';
+		howTo.appendChild(help);
+
+	// add section before main
 	document.body.insertBefore(howTo, document.getElementsByTagName('main')[0]);
 	
 	// Event Listeners 
@@ -288,17 +319,23 @@ r(function() {
 	
 	form.addEventListener('click', function(e) {
 		var elt = e.target;
-		if (elt.classList.contains('summary')) {
+		var isSummary = elt.classList.contains('summary');
+		var isSummaryNested = elt.matches('.summary > *');
+		var isDetailsPara = elt.classList.contains('details-para');
+		var isCheckAllButton = elt.classList.contains('checkAll');
+		var isReset = (elt.type === 'reset');
+		
+		if (isSummary) {
 			e.preventDefault();
 			toggleDetails(elt);
-		} else if (elt.matches('.summary > *')) {
+		} else if (isSummaryNested) {
 			e.preventDefault();
 			toggleDetails(elt.parentElement);
-		} else if (elt.classList.contains('checkAll')) {
+		} else if (isCheckAllButton) {
 			checkChildren(elt);
-		} else if (elt.type === 'reset') {
+		} else if (isReset) {
 			resetChecklist();
-		} else if (elt.classList.contains('details-para')) {
+		} else if (isDetailsPara) {
 			e.preventDefault();
 		} else {
 			return;
@@ -308,14 +345,14 @@ r(function() {
 	document.addEventListener('keydown', function(e) {
 		var active = document.activeElement;
 		var isCheckbox = (active.type === 'checkbox');
-		var isBackspace = (e.key === 'Backspace' || e.keyCode === 8);
-		var isEnter = (e.key === 'Enter' || e.keyCode === 13);
-		var isSpacebar = (e.key === 'Spacebar' || e.keyCode === 32);
+		var pressBackspace = (e.key === 'Backspace' || e.keyCode === 8);
+		var pressEnter = (e.key === 'Enter' || e.keyCode === 13);
+		var pressSpacebar = (e.key === 'Spacebar' || e.keyCode === 32);
 		
-		if (isBackspace) {
+		if (pressBackspace) {
 			resetChecklist();
 			active.blur();
-		} else if (isCheckbox && isEnter) {
+		} else if (isCheckbox && pressEnter) {
 			e.preventDefault();
 			var updateChange = new Event('change');
 		  if (active.checked) {
@@ -324,7 +361,7 @@ r(function() {
 		  	active.checked = true;
 		  };
 		  active.dispatchEvent(updateChange);
-		} else if (isCheckbox && isSpacebar) {
+		} else if (isCheckbox && pressSpacebar) {
 			e.preventDefault();
 			var pushActive = active.parentElement.getElementsByClassName('summary')[0];			
 			toggleDetails(pushActive);
