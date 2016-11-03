@@ -264,6 +264,13 @@ r(function() {
 			focusNoScroll(nextButton);
 		} else {
 			focusNoScroll(nextInput);
+			// Since firefox won't take into account StopImmediatePropagation with enter, we must blur then refocus the checkbox
+			if (isFirefox) {
+				nextInput.blur();
+				setTimeout(function() {
+					nextInput.focus();
+				}, 600);	
+			}
 		}
 		if (isFirefox) {
 			scrollTo(document.getElementsByTagName('html')[0], nextSection.offsetTop, 600);
@@ -432,6 +439,7 @@ if (isFirefox) {
 			resetChecklist();
 			active.blur();
 		} else if (isCheckbox && pressEnter) {
+			e.preventDefault();
 			var updateChange = new Event('change');
 		  if (active.checked) {
 		  	active.checked = false;
@@ -439,7 +447,6 @@ if (isFirefox) {
 		  	active.checked = true;
 		  };
 		  active.dispatchEvent(updateChange);
-			e.preventDefault();
 			e.stopImmediatePropagation();	// Need this for MS Edge
 		} else if (isCheckbox && pressSpacebar) {
 			e.preventDefault();
