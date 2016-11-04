@@ -5,7 +5,6 @@ r(function() {
 	
 	var form = document.getElementsByTagName('form')[0],
 			details = document.getElementsByClassName('details'),
-			checkAll = document.getElementsByClassName('checkAll'),
 			boxes = document.querySelectorAll('input[type="checkbox"]'),
 			
 			howTo = document.createElement('section'),
@@ -17,7 +16,6 @@ r(function() {
 			controls = document.getElementById('controls'),
 			barWrap = document.createElement('div'),
 			bar = document.createElement('div'),
-			textProgress = document.createElement('span'),
 			
 			count = boxes.length,
 			checked = 0,
