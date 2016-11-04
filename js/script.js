@@ -132,7 +132,7 @@ r(function() {
 	function barHandler(widthPer) {
 		bar.style.width = widthPer + "%";
 		bar.dataset.width = widthPer + "%";
-	}
+	};
 	
   // Update Progress Bar
 	function updateProgress() {
@@ -174,11 +174,11 @@ r(function() {
 		box.checked = oldVal === "true" ? true : false;
 		
 		// add eventListener change for each checkbox
-		box.addEventListener("change", function() {
+/*		box.addEventListener("change", function() {
 			updateProgress();
 			storage.set('blitzOptim_barWidth', progress);
 			storage.set(storageId, this.checked); 
-		});
+		});	*/
 	};
 	
 	// Reset form
@@ -227,7 +227,7 @@ r(function() {
 		var x = window.scrollX, y = window.scrollY;
 		el.focus();
 		window.scrollTo(x, y);
-	}
+	};
 	
 	// Check all inputs for SVG, JS and anims
 	function checkChildren(trigger) {
@@ -364,7 +364,7 @@ r(function() {
 	// add section before main
 	document.body.insertBefore(howTo, document.getElementsByTagName('main')[0]);
 	
-	// Add checkAll buttons
+	// Inject checkAll buttons
 	for (var i = 0; i < checkButtons.length; i++) {
 		var scope = checkButtons[i];
 		var button = document.createElement('button');
@@ -407,6 +407,20 @@ r(function() {
 		}
 	});
 	
+	form.addEventListener('change', function(e) {
+		var elt = e.target;
+		updateProgress();
+		if (elt.getAttribute("value") !== null) {
+			var storageId = "blitzOptim_" + elt.getAttribute("value");
+			var checkStatus = elt.checked;
+		} else { // Keyboard > Enter
+			var storageId = "blitzOptim_" + document.activeElement.getAttribute("value");
+			checkStatus = document.activeElement.checked;
+		}
+		storage.set('blitzOptim_barWidth', progress);
+		storage.set(storageId, checkStatus);
+	});
+	
 	// Must use keyup as keydown won’t work in firefox for spacebar
 	if (isFirefox) {
 		document.addEventListener('keyup', function(e) {
@@ -426,7 +440,7 @@ r(function() {
 		  	} else {
 		  		active.checked = true;
 		  	};
-		  	active.dispatchEvent(updateChange);
+		  	form.dispatchEvent(updateChange);
 				e.preventDefault();
 			} else if (isCheckbox && pressSpacebar) {
 				e.preventDefault();
@@ -454,7 +468,7 @@ r(function() {
 		  	} else {
 		  		active.checked = true;
 		  	};
-		  	active.dispatchEvent(updateChange);
+		  	form.dispatchEvent(updateChange);
 				e.stopImmediatePropagation();	// Need this for MS Edge
 			} else if (isCheckbox && pressSpacebar) {
 				e.preventDefault();
