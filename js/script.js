@@ -45,7 +45,6 @@ r(function() {
 	
 	// localStorage with cookie fallback
 	var storage = (function() {
-		// Checking if localStorage is supported
 		var _hasLocalStorage = (function() {
 			var test = 'test';
 			try {
@@ -57,7 +56,6 @@ r(function() {
 			}
 		})();
 
-		// Functions for cookies (read, write and clear)
 		var _readCookie = function(name) {
 			var nameEQ = name + "=";
 			var ca = document.cookie.split(';');
@@ -93,22 +91,18 @@ r(function() {
 		};
 
 		return {
-			// storage.set(name, value, days) -> if localStorage setItem else write cookie
 			set: function(name, value, days) {
 				_hasLocalStorage ? localStorage.setItem(name, value) : _writeCookie(name, value, days);
 			},
 
-			// storage.get(name) -> read from localStorage or from cookie
 			get: function(name) {
 				return _hasLocalStorage ? localStorage.getItem(name) : _readCookie(name);
 			},
 
-			// storage.remove(name) -> removeItem or set cookie yesterday
 			remove: function(name) {
 				_hasLocalStorage ? localStorage.removeItem(name) : this.set(name, "", -1);
 			},
     	
-			// storage.clear() -> clear localStorage or cookie
 			clear: function() {
 				_hasLocalStorage ? localStorage.clear() : _clearCookie();
 			}
@@ -117,7 +111,6 @@ r(function() {
   
 	// FUNCTIONS
 	
-  // closest "à la jQuery"
   var getClosest = function (elem, tag) {
     for (; elem && elem !== document && elem.nodeType === 1; elem = elem.parentNode) {
     	if (elem.tagName.toLowerCase() === tag) {
@@ -127,23 +120,17 @@ r(function() {
 		return null;
 	};
 
-	// barHandler = set width and data-width for progress bar
 	function barHandler(widthPer) {
 		bar.style.width = widthPer + "%";
 		bar.dataset.width = widthPer + "%";
 	};
 	
-  // Update Progress Bar
 	function updateProgress() {
-	  // Check number of checked inputs
 		checked = document.querySelectorAll('input[type="checkbox"]:checked').length;
-		// Compute percentage for the progress bar
 		progress = parseInt(((checked / count) * 100), 10);
-		// Update progress bar
 		barHandler(progress);
 	};
   
-	// Scroll to + Top
 	function scrollTo(element, to, duration) {
 		if (duration <= 0) return;
 		var difference = to - element.scrollTop;
@@ -154,10 +141,10 @@ r(function() {
 			scrollTo(element, to, duration - 10);
 		}, 10);
 	};
-	// Shortcut for body
+
 	function scrollTop() {
 	  if (isFirefox) {
-    	scrollTo(document.getElementsByTagName('html')[0], form.offsetTop, 600);	// If firefox -> html (WTF?!?)
+    	scrollTo(document.getElementsByTagName('html')[0], form.offsetTop, 600);
 		} else {
 			scrollTo(document.body, form.offsetTop, 600);
 		}
@@ -169,23 +156,20 @@ r(function() {
 		window.scrollTo(x, y);
 	};
 	
-	// Reset form
 	function resetChecklist() {
-		// clear storage
 		storage.clear();
-		//set width of progress bar to 0
 		barHandler(0);
-		// reenable buttons for SVG, JS and anims
+
 		var enable = document.querySelectorAll('button[disabled]');
 		for (var i = 0; i < enable.length; i++) {
 			enable[i].disabled = false;
 		}
-		// force uncheck because iOS WebView
+
 		var uncheck = document.querySelectorAll('input[type="checkbox"]:checked');
 		for (var i = 0; i < uncheck.length; i++) {
 			uncheck[i].checked = false;
 		}
-		// scroll to top
+
 		focusNoScroll(document.querySelector('input[name]'));
 		scrollTop();
 	};
@@ -210,25 +194,17 @@ r(function() {
 		toggleAria(help);
 	};
 	
-	// Check all inputs for SVG, JS and anims
 	function checkChildren(trigger) {
-		// check if SVG, JS or anim
 		var checkScope = trigger.getAttribute('id');
-		// get all inputs in the scope
 		var toCheck = document.querySelectorAll('input[name="'+checkScope+'"]');
 		for (var j = 0; j < toCheck.length; j++) {
 			var checkMe = toCheck[j];
-			// check
 			checkMe.checked = true;
-			// update progress bar
 			updateProgress();
-			// store values of inputs
 			storage.set("blitzOptim_" + checkMe.getAttribute("value"), "true");
 			storage.set('blitzOptim_barWidth', progress);
 		}
-		// disable button
 		trigger.setAttribute('disabled', 'disabled');
-		// store value of button
 		storage.set("blitzOptim_" + trigger.getAttribute("id") + "_button", "true");
 		
 		// scroll to next section
@@ -240,7 +216,6 @@ r(function() {
 			focusNoScroll(nextButton);
 		} else {
 			focusNoScroll(nextInput);
-			// Since firefox won't take into account StopImmediatePropagation with enter, we must blur then refocus the checkbox
 			if (isFirefox) {
 				nextInput.blur();
 				setTimeout(function() {
@@ -274,13 +249,11 @@ r(function() {
 	})();
 	
 	(function initProgressBar() {
+		var retrievedProgress = storage.get('blitzOptim_barWidth');
 		barWrap.id = 'progress';
 		bar.id = 'progress-inner';
 		barWrap.appendChild(bar);
 		controls.insertBefore(barWrap, controls.firstChild);
-
-		// Get previous state and update progress bar
-		var retrievedProgress = storage.get('blitzOptim_barWidth');
 		if (retrievedProgress) {
 			barHandler(retrievedProgress);
 		} else {
@@ -295,11 +268,8 @@ r(function() {
 		for (var i = 0; i < count; i++) {
 			var box = boxes[i];
 			if (box.hasAttribute("value")) {
-				// storageID = name
 				var storageId = "blitzOptim_" + box.getAttribute("value");
-				// We check if an value is already stored
 				var oldVal = storage.get(storageId);
-				// add true/false for checked attribute
 				box.checked = oldVal === "true" ? true : false;
 			}
 		};
@@ -326,17 +296,15 @@ r(function() {
 	})();
 	
 	(function initHelp() {
-		// global section
 		howTo.id = 'how-to';
 	
-		// config button then add in section
 		helper.type = 'button';
 		helper.className = 'helper';
 		helper.id = 'helper';
 		helper.innerHTML = 'Help';
+			
 		howTo.appendChild(helper);
 		
-		// config help div then add in section
 		help.classList.add('help-content', 'hidden');
 		help.id = 'help';
 		help.setAttribute('aria-hidden', 'true');
@@ -359,11 +327,11 @@ r(function() {
   		+ '<p>Don’t worry, your checklist is autosaved: you can close this website, your current checklist will be retrieved when reopened.</p>'	
   		+ '<p>Finally, you can install this web-app on iOS and Android. And if you’re using Chrome, Firefox or Opera, it will also be available offline.</p>'
   		+ '</div>';
+			
 		howTo.appendChild(help);
 
 		helper.addEventListener('click', toggleHelp, false);
 		
-		// add section before main
 		document.body.insertBefore(howTo, document.getElementsByTagName('main')[0]);
 	})();
 	
@@ -396,19 +364,19 @@ r(function() {
 	
 	form.addEventListener('change', function(e) {
 		var elt = e.target;
+		var active = document.activeElement;
 		updateProgress();
 		if (elt.getAttribute("value") !== null) {
 			var storageId = "blitzOptim_" + elt.getAttribute("value");
 			var checkStatus = elt.checked;
-		} else { // Keyboard > Enter
-			var storageId = "blitzOptim_" + document.activeElement.getAttribute("value");
-			checkStatus = document.activeElement.checked;
+		} else {
+			var storageId = "blitzOptim_" + active.getAttribute("value");
+			var checkStatus = active.checked;
 		}
 		storage.set('blitzOptim_barWidth', progress);
 		storage.set(storageId, checkStatus);
 	});
 	
-	// Must use keyup as keydown won’t work in firefox for spacebar
 	if (isFirefox) {
 		document.addEventListener('keyup', keyboardHandler, false);
 	} else {
@@ -437,7 +405,7 @@ r(function() {
 		  };
 		  form.dispatchEvent(updateChange);
 		  if (!isFirefox) {
-				e.stopImmediatePropagation();	// Need this for MS Edge
+				e.stopImmediatePropagation();
 			};
 		} else if (isCheckbox && pressSpacebar) {
 			e.preventDefault();
