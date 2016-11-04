@@ -3,27 +3,48 @@
 r(function() {
 	// VARIABLES
 	
-	var summary = document.getElementsByClassName('summary'),
+	var form = document.getElementsByTagName('form')[0],
 			details = document.getElementsByClassName('details'),
 			checkAll = document.getElementsByClassName('checkAll'),
-			label = document.getElementsByTagName('label'),
 			boxes = document.querySelectorAll('input[type="checkbox"]'),
-
-			reset = document.querySelector('input[type="reset"]'),
 			
-			helper = document.getElementById('helper'),
-			help = document.getElementById('help'),
+			howTo = document.createElement('section'),
+			helper = document.createElement('button'),
+			help = document.createElement('div'),
 			
-			bar = document.getElementById('progress-inner'),
+			checkButtons = ['SVG', 'JavaScript', 'Animations'],
+	
+			controls = document.getElementById('controls'),
+			barWrap = document.createElement('div'),
+			bar = document.createElement('div'),
+			textProgress = document.createElement('span'),
+			
 			count = boxes.length,
 			checked = 0,
 			progress = 0;
+			
+	var isFirefox = false;
 	
-	// FUNCTIONS
-
+	// POLYFILLS
+	
+	// matches 
+	if (!Element.prototype.matches) {
+		Element.prototype.matches = 
+			Element.prototype.matchesSelector || 
+			Element.prototype.mozMatchesSelector ||
+			Element.prototype.msMatchesSelector || 
+			Element.prototype.oMatchesSelector || 
+			Element.prototype.webkitMatchesSelector ||
+			function(s) {
+      	var matches = (this.document || this.ownerDocument).querySelectorAll(s),
+				i = matches.length;
+				while (--i >= 0 && matches.item(i) !== this) {}
+					return i > -1;            
+			};
+	}
+	
 	// localStorage with cookie fallback
 	var storage = (function() {
-		// Checking if localStorage is supported
 		var _hasLocalStorage = (function() {
 			var test = 'test';
 			try {
@@ -35,7 +56,6 @@ r(function() {
 			}
 		})();
 
-		// Functions for cookies (read, write and clear)
 		var _readCookie = function(name) {
 			var nameEQ = name + "=";
 			var ca = document.cookie.split(';');
@@ -71,39 +91,46 @@ r(function() {
 		};
 
 		return {
-			// storage.set(name, value, days) -> if localStorage setItem else write cookie
 			set: function(name, value, days) {
 				_hasLocalStorage ? localStorage.setItem(name, value) : _writeCookie(name, value, days);
 			},
 
-			// storage.get(name) -> read from localStorage or from cookie
 			get: function(name) {
 				return _hasLocalStorage ? localStorage.getItem(name) : _readCookie(name);
 			},
 
-			// storage.remove(name) -> removeItem or set cookie yesterday
 			remove: function(name) {
 				_hasLocalStorage ? localStorage.removeItem(name) : this.set(name, "", -1);
 			},
     	
-			// storage.clear() -> clear localStorage or cookie
 			clear: function() {
 				_hasLocalStorage ? localStorage.clear() : _clearCookie();
 			}
 		};
 	})();
   
-  // Count number of checked inputs
+	// FUNCTIONS
+	
+  var getClosest = function (elem, tag) {
+    for (; elem && elem !== document && elem.nodeType === 1; elem = elem.parentNode) {
+    	if (elem.tagName.toLowerCase() === tag) {
+      	return elem;
+      }
+    }
+		return null;
+	};
+
+	function barHandler(widthPer) {
+		bar.style.width = widthPer + "%";
+		bar.dataset.width = widthPer + "%";
+	};
+	
 	function updateProgress() {
-	  // Check number of checked inputs
 		checked = document.querySelectorAll('input[type="checkbox"]:checked').length;
-		// Compute percentage for the progress bar
 		progress = parseInt(((checked / count) * 100), 10);
-		// Update progress bar
-		bar.style.width = progress + "%";
+		barHandler(progress);
 	};
   
-	// Scroll to + Top
 	function scrollTo(element, to, duration) {
 		if (duration <= 0) return;
 		var difference = to - element.scrollTop;
@@ -114,186 +141,278 @@ r(function() {
 			scrollTo(element, to, duration - 10);
 		}, 10);
 	};
-	// Shortcut for body
+
 	function scrollTop() {
-	  if (navigator.userAgent.toLowerCase().indexOf('firefox') > -1) {
-     scrollTo(document.getElementsByTagName('html')[0], 0, 600);	// If firefox -> html (WTF?!?)
+	  if (isFirefox) {
+    	scrollTo(document.getElementsByTagName('html')[0], form.offsetTop, 600);
 		} else {
-			scrollTo(document.body, 0, 600);
+			scrollTo(document.body, form.offsetTop, 600);
 		}
 	};
-
-	// Store input when checked
-	function storeCheckbox(box) {
-		// storageID = name
-		var storageId = "blitzOptim_" + box.getAttribute("value");
-		// We check if an value is already stored
-		var oldVal = storage.get(storageId);
-		
-		// check if old value stored
-		box.checked = oldVal === "true" ? true : false;
-
-		// add listener change, count # of checked, store name + progress
-		box.addEventListener("change", function() {
-			updateProgress();
-			storage.set('blitzOptim_barWidth', progress);
-			storage.set(storageId, this.checked); 
-		});
+	
+	function focusNoScroll(el) {
+		var x = window.scrollX, y = window.scrollY;
+		el.focus();
+		window.scrollTo(x, y);
 	};
 	
-	// Reset form
 	function resetChecklist() {
-		// clear storage
 		storage.clear();
-		//set width of progress bar to 0
-		bar.style.width = "0";
-		// scroll to top
-		scrollTop();
-		// reenable buttons for SVG, JS and anims
+		barHandler(0);
+
 		var enable = document.querySelectorAll('button[disabled]');
 		for (var i = 0; i < enable.length; i++) {
 			enable[i].disabled = false;
 		}
+
 		var uncheck = document.querySelectorAll('input[type="checkbox"]:checked');
 		for (var i = 0; i < uncheck.length; i++) {
 			uncheck[i].checked = false;
 		}
+
+		focusNoScroll(document.querySelector('input[name]'));
+		scrollTop();
 	};
 	
-	// Toggle details
-	function toggleDetails(e) {
-		e.preventDefault();
-		// toggle class open on summary
-		this.classList.toggle('open');
-		// toggle class hidden + aria for details = nextElementSibling
-		this.nextElementSibling.classList.toggle('hidden');		
-		if (this.nextElementSibling.getAttribute("aria-hidden") === "true") {
-			this.nextElementSibling.setAttribute('aria-hidden', 'false');
+	function toggleAria(el) {
+		if (el.getAttribute('aria-hidden') === 'true') {
+			el.setAttribute('aria-hidden', 'false');
 		} else {
-			this.nextElementSibling.setAttribute('aria-hidden', 'true');
+			el.setAttribute('aria-hidden', 'true');
 		}
 	};
 	
-	function toggleHelp(e) {
-		e.preventDefault();
+	function toggleDetails(trigger) {
+		var detail = trigger.nextElementSibling;
+		trigger.classList.toggle('open');
+		detail.classList.toggle('hidden');		
+		toggleAria(detail);
+	};
+	
+	function toggleHelp() {
 		help.classList.toggle('hidden');
-		if (help.getAttribute('aria-hidden') === 'true') {
-			help.setAttribute('aria-hidden', 'false');
-		}	else {
-			help.setAttribute('aria-hidden', 'true');
-		}
+		toggleAria(help);
 	};
 	
-	// Check all inputs for SVG, JS and anims
-	function checkChildren(e) {
-		e.preventDefault();
-		// check if SVG, JS or anim
-		var checkScope = this.getAttribute('id');
-		// get all inputs in the scope
+	function checkChildren(trigger) {
+		var checkScope = trigger.getAttribute('id');
 		var toCheck = document.querySelectorAll('input[name="'+checkScope+'"]');
 		for (var j = 0; j < toCheck.length; j++) {
 			var checkMe = toCheck[j];
-			// check
 			checkMe.checked = true;
-			// update progress bar
 			updateProgress();
-			// store values of inputs
 			storage.set("blitzOptim_" + checkMe.getAttribute("value"), "true");
 			storage.set('blitzOptim_barWidth', progress);
 		}
-		// disable button
-		this.setAttribute('disabled', 'disabled');
-		// store value of button
-		storage.set("blitzOptim_" + this.getAttribute("id") + "_button", "true");
-		// Maybe remove eventListener and re-add when reset?
-	}
+		trigger.setAttribute('disabled', 'disabled');
+		storage.set("blitzOptim_" + trigger.getAttribute("id") + "_button", "true");
+		
+		// scroll to next section
+		var currentSection = getClosest(trigger, 'section');
+		var nextSection = currentSection.nextElementSibling;		
+		var nextButton = nextSection.querySelector('.checkAll');
+		var nextInput = nextSection.getElementsByTagName('input')[0];
+		if (nextButton) {
+			focusNoScroll(nextButton);
+		} else {
+			focusNoScroll(nextInput);
+			if (isFirefox) {
+				nextInput.blur();
+				setTimeout(function() {
+					nextInput.focus();
+				}, 600);	
+			}
+		}
+		if (isFirefox) {
+			scrollTo(document.getElementsByTagName('html')[0], nextSection.offsetTop, 600);
+		} else {
+			scrollTo(document.body, nextSection.offsetTop, 600);
+		}
+	};
 
 	// INIT (run on doc Ready)
-		
-	// Adding js-enabled to body (for details)
-	document.getElementsByTagName('body')[0].classList.add('js-enabled');
-		
-	// Hide details
-	for (var i = 0; i < details.length; i++) {
-		details[i].classList.add('hidden');
-		details[i].setAttribute('aria-hidden', 'true');
-		details[i].setAttribute('aria-live', 'polite');
-	};
-
-	// Get previous state and update progress bar
-	var retrievedProgress = storage.get('blitzOptim_barWidth');
-	if (retrievedProgress) {
-		bar.style.width = retrievedProgress + "%";
-	} else {
-	  // Doesn’t work AS-IS
-		updateProgress();
-	};
-
-
-	// EVENT LISTENERS
-
-	for (var i = 0; i < count; i++) {
-		var box = boxes[i];
-		if (box.hasAttribute("value")) {
-			storeCheckbox(box);
-			
-			// Add in storeCheckbox function ?
-			box.addEventListener('keydown', function(e) {
-		  	if (e.keyCode == 13) {
-		  		e.preventDefault();
-					var updateChange = new Event('change');
-		  		if (this.checked) {
-		  			this.checked = false;
-		  		} else {
-		  			this.checked = true;
-		  		};
-		  		this.dispatchEvent(updateChange);
-		  	} else if (e.keyCode == 32) {
-		  		// = toggleDetails() so design a common function
-					e.preventDefault();
-					var parentEl = this.parentElement;
-					var detail = parentEl.getElementsByClassName('details')[0];
-					detail.previousElementSibling.classList.toggle('open');
-					detail.classList.toggle('hidden');
-					if (detail.getAttribute('aria-hidden') === 'true') {
-						detail.setAttribute('aria-hidden', 'false');
-					} else {
-						detail.setAttribute('aria-hidden', 'true');				
-					}
-				}
-			});
-		}
-	};
 	
-	reset.addEventListener('touchend', resetChecklist, true);
-	reset.addEventListener('click', resetChecklist, true);
-
-	for (var i = 0; i < summary.length; i++) {
-		summary[i].addEventListener('click', toggleDetails, false);
-	};
-
-	for (var i = 0; i < checkAll.length; i++) {
-		var button = checkAll[i];
-		var disabled = storage.get("blitzOptim_" + button.getAttribute("id") + "_button");
-		if (disabled) {
-			button.setAttribute('disabled', 'disabled');
+	(function checkFirefox() {
+		if (navigator.userAgent.toLowerCase().indexOf('firefox') > -1) {
+			isFirefox = true;
 		}
-		button.addEventListener('click', checkChildren, true);
+	})();
+		
+	(function hideDetails() {
+		document.getElementsByTagName('body')[0].classList.add('js-enabled');
+		for (var i = 0; i < details.length; i++) {
+			var detail = details[i];
+			detail.classList.add('hidden');
+			detail.setAttribute('aria-hidden', 'true');
+			detail.setAttribute('aria-live', 'polite');
+		};
+	})();
+	
+	(function initProgressBar() {
+		var retrievedProgress = storage.get('blitzOptim_barWidth');
+		barWrap.id = 'progress';
+		bar.id = 'progress-inner';
+		barWrap.appendChild(bar);
+		controls.insertBefore(barWrap, controls.firstChild);
+		if (retrievedProgress) {
+			barHandler(retrievedProgress);
+		} else {
+	  	setTimeout(function() {
+				updateProgress();
+				storage.set('blitzOptim_barWidth', progress);
+			}, 100);
+		};
+	})();
+
+  (function initCheckboxes() {
+		for (var i = 0; i < count; i++) {
+			var box = boxes[i];
+			if (box.hasAttribute("value")) {
+				var storageId = "blitzOptim_" + box.getAttribute("value");
+				var oldVal = storage.get(storageId);
+				box.checked = oldVal === "true" ? true : false;
+			}
+		};
+	})();
+
+	(function initCheckAllButtons() {
+		for (var i = 0; i < checkButtons.length; i++) {
+			var scope = checkButtons[i];
+			var value = scope.toLowerCase();
+			var button = document.createElement('button');
+			var disabled = storage.get("blitzOptim_"+value+"_button");
+			button.type = 'button';
+			button.classList.add('checkAll');
+			button.id = value;
+			button.innerHTML = 'Thanks but I don’t need ' + scope;
+			if (disabled) {
+				button.setAttribute('disabled', 'disabled');
+			}
+			var section = document.querySelector('#'+value+'-list');
+			var wrapper = section.firstElementChild;
+			var firstLabel = wrapper.getElementsByTagName('label')[0];
+			wrapper.insertBefore(button, firstLabel);
+		};
+	})();
+	
+	(function initHelp() {
+		howTo.id = 'how-to';
+	
+		helper.type = 'button';
+		helper.className = 'helper';
+		helper.id = 'helper';
+		helper.innerHTML = 'Help';
+			
+		howTo.appendChild(helper);
+		
+		help.classList.add('help-content', 'hidden');
+		help.id = 'help';
+		help.setAttribute('aria-hidden', 'true');
+		help.setAttribute('aria-live', 'assertive');
+		help.innerHTML = '<div class="wrapper">'
+			+ '<p>If you’re using a mouse:</p>'
+			+ '<ul>'
+  		+ '<li>click the checkbox to check</li>'
+  		+ '<li>click the label to display details</li>'
+  		+ '<li>click the “Thanks button” if you don’t need SVG, JS or animations</li>'
+  		+ '<li>click reset to… reset the checklist</li>'
+  		+ '</ul>'
+  		+ '<p>If you’re using a keyboard:</p>'
+  		+ '<ul>'
+  		+ '<li>press “tab” to navigate items</li>'
+  		+ '<li>press “enter” to check</li>'
+  		+ '<li>press “space” to display details</li>'
+  		+ '<li>press “backspace” to reset the checklist</li>'
+  		+ '</ul>'
+  		+ '<p>Don’t worry, your checklist is autosaved: you can close this website, your current checklist will be retrieved when reopened.</p>'	
+  		+ '<p>Finally, you can install this web-app on iOS and Android. And if you’re using Chrome, Firefox or Opera, it will also be available offline.</p>'
+  		+ '</div>';
+			
+		howTo.appendChild(help);
+
+		helper.addEventListener('click', toggleHelp, false);
+		
+		document.body.insertBefore(howTo, document.getElementsByTagName('main')[0]);
+	})();
+	
+	// Event Listeners 
+	
+	form.addEventListener('click', function(e) {
+		var elt = e.target;
+		var isSummary = elt.classList.contains('summary');
+		var isSummaryNested = elt.matches('.summary > *');
+		var isDetailsPara = elt.classList.contains('details-para');
+		var isCheckAllButton = elt.classList.contains('checkAll');
+		var isReset = (elt.type === 'reset');
+		
+		if (isSummary) {
+			e.preventDefault();
+			toggleDetails(elt);
+		} else if (isSummaryNested) {
+			e.preventDefault();
+			toggleDetails(elt.parentElement);
+		} else if (isCheckAllButton) {
+			checkChildren(elt);
+		} else if (isReset) {
+			resetChecklist();
+		} else if (isDetailsPara) {
+			e.preventDefault();
+		} else {
+			return;
+		}
+	});
+	
+	form.addEventListener('change', function(e) {
+		var elt = e.target;
+		var active = document.activeElement;
+		updateProgress();
+		if (elt.getAttribute("value") !== null) {
+			var storageId = "blitzOptim_" + elt.getAttribute("value");
+			var checkStatus = elt.checked;
+		} else {
+			var storageId = "blitzOptim_" + active.getAttribute("value");
+			var checkStatus = active.checked;
+		}
+		storage.set('blitzOptim_barWidth', progress);
+		storage.set(storageId, checkStatus);
+	});
+	
+	if (isFirefox) {
+		document.addEventListener('keyup', keyboardHandler, false);
+	} else {
+		document.addEventListener('keydown', keyboardHandler, false);
 	}
 	
-	helper.addEventListener('touchend', toggleHelp, false);
-	helper.addEventListener('click', toggleHelp, false);
-	
-	document.onkeydown = function(e) {
-		e = e || window.event;
-		var isEscape = false;
-		if ("key" in e) {
-			isEscape = (e.key == "Escape" || e.key == "Esc");
+	function keyboardHandler(e) {
+		var active = document.activeElement;
+		var isCheckbox = (active.type === 'checkbox');
+		var pressBackspace = (e.key === 'Backspace' || e.keyCode === 8);
+		var pressEnter = (e.key === 'Enter' || e.keyCode === 13);
+		var pressSpacebar = (e.key === 'Spacebar' || e.keyCode === 32);
+		
+		if (pressBackspace) {
+			resetChecklist();
+			if (isFirefox) {
+				active.blur();
+			};
+		} else if (isCheckbox && pressEnter) {
+			e.preventDefault();
+			var updateChange = new Event('change');
+		  if (active.checked) {
+		  	active.checked = false;
+		  } else {
+		  	active.checked = true;
+		  };
+		  form.dispatchEvent(updateChange);
+		  if (!isFirefox) {
+				e.stopImmediatePropagation();
+			};
+		} else if (isCheckbox && pressSpacebar) {
+			e.preventDefault();
+			var pushActive = active.parentElement.getElementsByClassName('summary')[0];			
+			toggleDetails(pushActive);
 		} else {
-			isEscape = (e.keyCode == 27);
-		}
-		if (isEscape) {
-				resetChecklist();
+			return;
 		}
 	};
 

@@ -17,7 +17,7 @@ A progressive web app to help you boost eBook performance
 - press “tab” to navigate items
 - press “enter” to check
 - press “space” to display details
-- press “escape” to reset the checklist
+- press “backspace” to reset the checklist
 
 Don’t worry, your checklist is autosaved: you can close this website, your current checklist will be retrieved when reopened.
 

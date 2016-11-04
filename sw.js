@@ -1,12 +1,12 @@
 /* https://gist.github.com/kosamari/7c5d1e8449b2fbc97d372675f16b566e */
 
 var APP_PREFIX = 'blitzOptim_'
-var VERSION = 'v0_30'
+var VERSION = 'v0_40'
 var CACHE_NAME = APP_PREFIX + VERSION
 var URLS = [
   '/eBookPerfChecklist/',
   '/eBookPerfChecklist/index.html',
-  '/eBookPerfChecklist/assets/blitz-64.svg',
+  '/eBookPerfChecklist/assets/blitz-16.svg',
   '/eBookPerfChecklist/assets/blitzOptim-decorations.svg',
   '/eBookPerfChecklist/css/styles.css',
   '/eBookPerfChecklist/js/script.js',
