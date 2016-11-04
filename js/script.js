@@ -118,7 +118,6 @@ r(function() {
 	// FUNCTIONS
 	
   // closest "à la jQuery"
-  
   var getClosest = function (elem, tag) {
     for (; elem && elem !== document && elem.nodeType === 1; elem = elem.parentNode) {
     	if (elem.tagName.toLowerCase() === tag) {
@@ -168,16 +167,6 @@ r(function() {
 		var x = window.scrollX, y = window.scrollY;
 		el.focus();
 		window.scrollTo(x, y);
-	};
-
-	// Init input when checked
-	function initCheckbox(box) {
-		// storageID = name
-		var storageId = "blitzOptim_" + box.getAttribute("value");
-		// We check if an value is already stored
-		var oldVal = storage.get(storageId);
-		// add true/false for checked attribute
-		box.checked = oldVal === "true" ? true : false;
 	};
 	
 	// Reset form
@@ -306,8 +295,12 @@ r(function() {
 		for (var i = 0; i < count; i++) {
 			var box = boxes[i];
 			if (box.hasAttribute("value")) {
-				// Why function? Perf on load is better like this
-				initCheckbox(box);
+				// storageID = name
+				var storageId = "blitzOptim_" + box.getAttribute("value");
+				// We check if an value is already stored
+				var oldVal = storage.get(storageId);
+				// add true/false for checked attribute
+				box.checked = oldVal === "true" ? true : false;
 			}
 		};
 	})();
