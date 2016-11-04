@@ -11,6 +11,8 @@ r(function() {
 			howTo = document.createElement('section'),
 			helper = document.createElement('button'),
 			help = document.createElement('div'),
+			
+			checkButtons = ['SVG', 'JavaScript', 'Animations'],
 	
 			controls = document.getElementById('controls'),
 			barWrap = document.createElement('div'),
@@ -22,7 +24,7 @@ r(function() {
 			progress = 0;
 			
 	var isFirefox = false;
-
+	
 	// POLYFILLS
 	
 	// matches 
@@ -362,6 +364,20 @@ r(function() {
 	// add section before main
 	document.body.insertBefore(howTo, document.getElementsByTagName('main')[0]);
 	
+	// Add checkAll buttons
+	for (var i = 0; i < checkButtons.length; i++) {
+		var scope = checkButtons[i];
+		var button = document.createElement('button');
+		button.type = 'button';
+		button.classList.add('checkAll');
+		button.id = scope.toLowerCase();
+		button.innerHTML = 'Thanks but I don’t need ' + scope;
+		var section = document.querySelector('#'+scope.toLowerCase()+'-list');
+		var wrapper = section.firstElementChild;
+		var firstLabel = wrapper.getElementsByTagName('label')[0];
+		wrapper.insertBefore(button, firstLabel);
+	};
+	
 	// Event Listeners 
 	
 	helper.addEventListener('click', toggleHelp, false);
@@ -392,63 +408,63 @@ r(function() {
 	});
 	
 	// Must use keyup as keydown won’t work in firefox for spacebar
-if (isFirefox) {
-	document.addEventListener('keyup', function(e) {
-		var active = document.activeElement;
-		var isCheckbox = (active.type === 'checkbox');
-		var pressBackspace = (e.key === 'Backspace' || e.keyCode === 8);
-		var pressEnter = (e.key === 'Enter' || e.keyCode === 13);
-		var pressSpacebar = (e.key === 'Spacebar' || e.keyCode === 32);
+	if (isFirefox) {
+		document.addEventListener('keyup', function(e) {
+			var active = document.activeElement;
+			var isCheckbox = (active.type === 'checkbox');
+			var pressBackspace = (e.key === 'Backspace' || e.keyCode === 8);
+			var pressEnter = (e.key === 'Enter' || e.keyCode === 13);
+			var pressSpacebar = (e.key === 'Spacebar' || e.keyCode === 32);
 		
-		if (pressBackspace) {
-			resetChecklist();
-			active.blur();
-		} else if (isCheckbox && pressEnter) {
-			var updateChange = new Event('change');
-		  if (active.checked) {
-		  	active.checked = false;
-		  } else {
-		  	active.checked = true;
-		  };
-		  active.dispatchEvent(updateChange);
-			e.preventDefault();
-		} else if (isCheckbox && pressSpacebar) {
-			e.preventDefault();
-			var pushActive = active.parentElement.getElementsByClassName('summary')[0];			
-			toggleDetails(pushActive);
-		} else {
-			return;
-		}
-	});
-} else {
-	document.addEventListener('keydown', function(e) {
-		var active = document.activeElement;
-		var isCheckbox = (active.type === 'checkbox');
-		var pressBackspace = (e.key === 'Backspace' || e.keyCode === 8);
-		var pressEnter = (e.key === 'Enter' || e.keyCode === 13);
-		var pressSpacebar = (e.key === 'Spacebar' || e.keyCode === 32);
+			if (pressBackspace) {
+				resetChecklist();
+				active.blur();
+			} else if (isCheckbox && pressEnter) {
+				var updateChange = new Event('change');
+		  	if (active.checked) {
+		  		active.checked = false;
+		  	} else {
+		  		active.checked = true;
+		  	};
+		  	active.dispatchEvent(updateChange);
+				e.preventDefault();
+			} else if (isCheckbox && pressSpacebar) {
+				e.preventDefault();
+				var pushActive = active.parentElement.getElementsByClassName('summary')[0];			
+				toggleDetails(pushActive);
+			} else {
+				return;
+			}
+		});
+	} else {
+		document.addEventListener('keydown', function(e) {
+			var active = document.activeElement;
+			var isCheckbox = (active.type === 'checkbox');
+			var pressBackspace = (e.key === 'Backspace' || e.keyCode === 8);
+			var pressEnter = (e.key === 'Enter' || e.keyCode === 13);
+			var pressSpacebar = (e.key === 'Spacebar' || e.keyCode === 32);
 		
-		if (pressBackspace) {
-			resetChecklist();
-		} else if (isCheckbox && pressEnter) {
-			e.preventDefault();
-			var updateChange = new Event('change');
-		  if (active.checked) {
-		  	active.checked = false;
-		  } else {
-		  	active.checked = true;
-		  };
-		  active.dispatchEvent(updateChange);
-			e.stopImmediatePropagation();	// Need this for MS Edge
-		} else if (isCheckbox && pressSpacebar) {
-			e.preventDefault();
-			var pushActive = active.parentElement.getElementsByClassName('summary')[0];			
-			toggleDetails(pushActive);
-		} else {
-			return;
-		}
-	});
-}
+			if (pressBackspace) {
+				resetChecklist();
+			} else if (isCheckbox && pressEnter) {
+				e.preventDefault();
+				var updateChange = new Event('change');
+		  	if (active.checked) {
+		  		active.checked = false;
+		  	} else {
+		  		active.checked = true;
+		  	};
+		  	active.dispatchEvent(updateChange);
+				e.stopImmediatePropagation();	// Need this for MS Edge
+			} else if (isCheckbox && pressSpacebar) {
+				e.preventDefault();
+				var pushActive = active.parentElement.getElementsByClassName('summary')[0];			
+				toggleDetails(pushActive);
+			} else {
+				return;
+			}
+		});
+	}
 
 });
 function r(f){/in/.test(document.readyState)?setTimeout('r('+f+')',9):f()}																	
