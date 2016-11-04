@@ -163,6 +163,12 @@ r(function() {
 			scrollTo(document.body, form.offsetTop, 600);
 		}
 	};
+	
+	function focusNoScroll(el) {
+		var x = window.scrollX, y = window.scrollY;
+		el.focus();
+		window.scrollTo(x, y);
+	};
 
 	// Init input when checked
 	function initCheckbox(box) {
@@ -172,13 +178,6 @@ r(function() {
 		var oldVal = storage.get(storageId);
 		// add true/false for checked attribute
 		box.checked = oldVal === "true" ? true : false;
-		
-		// add eventListener change for each checkbox
-/*		box.addEventListener("change", function() {
-			updateProgress();
-			storage.set('blitzOptim_barWidth', progress);
-			storage.set(storageId, this.checked); 
-		});	*/
 	};
 	
 	// Reset form
@@ -210,7 +209,6 @@ r(function() {
 		}
 	};
 	
-	// Toggle details
 	function toggleDetails(trigger) {
 		var detail = trigger.nextElementSibling;
 		trigger.classList.toggle('open');
@@ -221,12 +219,6 @@ r(function() {
 	function toggleHelp() {
 		help.classList.toggle('hidden');
 		toggleAria(help);
-	};
-	
-	function focusNoScroll(el) {
-		var x = window.scrollX, y = window.scrollY;
-		el.focus();
-		window.scrollTo(x, y);
 	};
 	
 	// Check all inputs for SVG, JS and anims
@@ -276,58 +268,73 @@ r(function() {
 
 	// INIT (run on doc Ready)
 	
-	if (navigator.userAgent.toLowerCase().indexOf('firefox') > -1) {
-		isFirefox = true;
-	}
-	
-	// Adding js-enabled to body (for details)
-	document.getElementsByTagName('body')[0].classList.add('js-enabled');
+	(function checkFirefox() {
+		if (navigator.userAgent.toLowerCase().indexOf('firefox') > -1) {
+			isFirefox = true;
+		}
+	})();
 		
-	// Hide details
-	for (var i = 0; i < details.length; i++) {
-		var detail = details[i];
-		detail.classList.add('hidden');
-		detail.setAttribute('aria-hidden', 'true');
-		detail.setAttribute('aria-live', 'polite');
-	};
+	(function hideDetails() {
+		document.getElementsByTagName('body')[0].classList.add('js-enabled');
+		for (var i = 0; i < details.length; i++) {
+			var detail = details[i];
+			detail.classList.add('hidden');
+			detail.setAttribute('aria-hidden', 'true');
+			detail.setAttribute('aria-live', 'polite');
+		};
+	})();
 	
-	// Create Progress bar
-	barWrap.id = 'progress';
-	bar.id = 'progress-inner';
-	barWrap.appendChild(bar);
-	controls.insertBefore(barWrap, controls.firstChild);
+	(function initProgressBar() {
+		barWrap.id = 'progress';
+		bar.id = 'progress-inner';
+		barWrap.appendChild(bar);
+		controls.insertBefore(barWrap, controls.firstChild);
 
-	// Get previous state and update progress bar
-	var retrievedProgress = storage.get('blitzOptim_barWidth');
-	if (retrievedProgress) {
-		barHandler(retrievedProgress);
-	} else {
-	  // Won’t work without setTimeout
-	  setTimeout(function() {
-			updateProgress();
-			storage.set('blitzOptim_barWidth', progress);
-		}, 50);
-	};
+		// Get previous state and update progress bar
+		var retrievedProgress = storage.get('blitzOptim_barWidth');
+		if (retrievedProgress) {
+			barHandler(retrievedProgress);
+		} else {
+	  	setTimeout(function() {
+				updateProgress();
+				storage.set('blitzOptim_barWidth', progress);
+			}, 100);
+		};
+	})();
 
-  // Init checkboxes -> retrive stored value and check
-	for (var i = 0; i < count; i++) {
-		var box = boxes[i];
-		if (box.hasAttribute("value")) {
-			initCheckbox(box);			
-		}
-	};
+  (function initCheckboxes() {
+		for (var i = 0; i < count; i++) {
+			var box = boxes[i];
+			if (box.hasAttribute("value")) {
+				// Why function? Perf on load is better like this
+				initCheckbox(box);
+			}
+		};
+	})();
 
-	// Disable checkAll buttons from previous session
-	for (var i = 0; i < checkAll.length; i++) {
-		var button = checkAll[i];
-		var disabled = storage.get("blitzOptim_" + button.getAttribute("id") + "_button");
-		if (disabled) {
-			button.setAttribute('disabled', 'disabled');
-		}
-	};
+	(function initCheckAllButtons() {
+		for (var i = 0; i < checkButtons.length; i++) {
+			var scope = checkButtons[i];
+			var value = scope.toLowerCase();
+			var button = document.createElement('button');
+			var disabled = storage.get("blitzOptim_"+value+"_button");
+			button.type = 'button';
+			button.classList.add('checkAll');
+			button.id = value;
+			button.innerHTML = 'Thanks but I don’t need ' + scope;
+			if (disabled) {
+				button.setAttribute('disabled', 'disabled');
+			}
+			var section = document.querySelector('#'+value+'-list');
+			var wrapper = section.firstElementChild;
+			var firstLabel = wrapper.getElementsByTagName('label')[0];
+			wrapper.insertBefore(button, firstLabel);
+		};
+	})();
 	
-	// Inject help
-	howTo.id = 'how-to';
+	(function initHelp() {
+		// global section
+		howTo.id = 'how-to';
 	
 		// config button then add in section
 		helper.type = 'button';
@@ -361,26 +368,13 @@ r(function() {
   		+ '</div>';
 		howTo.appendChild(help);
 
-	// add section before main
-	document.body.insertBefore(howTo, document.getElementsByTagName('main')[0]);
-	
-	// Inject checkAll buttons
-	for (var i = 0; i < checkButtons.length; i++) {
-		var scope = checkButtons[i];
-		var button = document.createElement('button');
-		button.type = 'button';
-		button.classList.add('checkAll');
-		button.id = scope.toLowerCase();
-		button.innerHTML = 'Thanks but I don’t need ' + scope;
-		var section = document.querySelector('#'+scope.toLowerCase()+'-list');
-		var wrapper = section.firstElementChild;
-		var firstLabel = wrapper.getElementsByTagName('label')[0];
-		wrapper.insertBefore(button, firstLabel);
-	};
+		helper.addEventListener('click', toggleHelp, false);
+		
+		// add section before main
+		document.body.insertBefore(howTo, document.getElementsByTagName('main')[0]);
+	})();
 	
 	// Event Listeners 
-	
-	helper.addEventListener('click', toggleHelp, false);
 	
 	form.addEventListener('click', function(e) {
 		var elt = e.target;
@@ -423,62 +417,43 @@ r(function() {
 	
 	// Must use keyup as keydown won’t work in firefox for spacebar
 	if (isFirefox) {
-		document.addEventListener('keyup', function(e) {
-			var active = document.activeElement;
-			var isCheckbox = (active.type === 'checkbox');
-			var pressBackspace = (e.key === 'Backspace' || e.keyCode === 8);
-			var pressEnter = (e.key === 'Enter' || e.keyCode === 13);
-			var pressSpacebar = (e.key === 'Spacebar' || e.keyCode === 32);
-		
-			if (pressBackspace) {
-				resetChecklist();
-				active.blur();
-			} else if (isCheckbox && pressEnter) {
-				var updateChange = new Event('change');
-		  	if (active.checked) {
-		  		active.checked = false;
-		  	} else {
-		  		active.checked = true;
-		  	};
-		  	form.dispatchEvent(updateChange);
-				e.preventDefault();
-			} else if (isCheckbox && pressSpacebar) {
-				e.preventDefault();
-				var pushActive = active.parentElement.getElementsByClassName('summary')[0];			
-				toggleDetails(pushActive);
-			} else {
-				return;
-			}
-		});
+		document.addEventListener('keyup', keyboardHandler, false);
 	} else {
-		document.addEventListener('keydown', function(e) {
-			var active = document.activeElement;
-			var isCheckbox = (active.type === 'checkbox');
-			var pressBackspace = (e.key === 'Backspace' || e.keyCode === 8);
-			var pressEnter = (e.key === 'Enter' || e.keyCode === 13);
-			var pressSpacebar = (e.key === 'Spacebar' || e.keyCode === 32);
-		
-			if (pressBackspace) {
-				resetChecklist();
-			} else if (isCheckbox && pressEnter) {
-				e.preventDefault();
-				var updateChange = new Event('change');
-		  	if (active.checked) {
-		  		active.checked = false;
-		  	} else {
-		  		active.checked = true;
-		  	};
-		  	form.dispatchEvent(updateChange);
-				e.stopImmediatePropagation();	// Need this for MS Edge
-			} else if (isCheckbox && pressSpacebar) {
-				e.preventDefault();
-				var pushActive = active.parentElement.getElementsByClassName('summary')[0];			
-				toggleDetails(pushActive);
-			} else {
-				return;
-			}
-		});
+		document.addEventListener('keydown', keyboardHandler, false);
 	}
+	
+	function keyboardHandler(e) {
+		var active = document.activeElement;
+		var isCheckbox = (active.type === 'checkbox');
+		var pressBackspace = (e.key === 'Backspace' || e.keyCode === 8);
+		var pressEnter = (e.key === 'Enter' || e.keyCode === 13);
+		var pressSpacebar = (e.key === 'Spacebar' || e.keyCode === 32);
+		
+		if (pressBackspace) {
+			resetChecklist();
+			if (isFirefox) {
+				active.blur();
+			};
+		} else if (isCheckbox && pressEnter) {
+			e.preventDefault();
+			var updateChange = new Event('change');
+		  if (active.checked) {
+		  	active.checked = false;
+		  } else {
+		  	active.checked = true;
+		  };
+		  form.dispatchEvent(updateChange);
+		  if (!isFirefox) {
+				e.stopImmediatePropagation();	// Need this for MS Edge
+			};
+		} else if (isCheckbox && pressSpacebar) {
+			e.preventDefault();
+			var pushActive = active.parentElement.getElementsByClassName('summary')[0];			
+			toggleDetails(pushActive);
+		} else {
+			return;
+		}
+	};
 
 });
 function r(f){/in/.test(document.readyState)?setTimeout('r('+f+')',9):f()}																	
