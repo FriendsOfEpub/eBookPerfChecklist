@@ -479,6 +479,21 @@
         </label>
         
         <label>
+        	<input type="checkbox" name="javascript" value="enhancement"/>
+        	<span class="checker"></span>
+        	<span class="summary">Ensure your eBook works well if JavaScript is not supported</span>
+        	<span class="details">
+        		<span class="details-para">What if a script is running in the background while the Reading System doesn’t even support the feature you’re relying upon? That would waste quite a lot of ressources, right?</span>
+        		
+        		<span class="details-para">Your scripts should be built around features, which means you <a href="http://www.html5rocks.com/en/tutorials/detection/">detect those features first</a> and run the script accordingly.</span>
+        		
+        		<span class="details-para">And since “no JavaScript” is quite the standard in practice, you should consider scripting as a <a href="https://www.smashingmagazine.com/2009/04/progressive-enhancement-what-it-is-and-how-to-use-it/">progressive enhancement.</a></span>
+        		
+        		<span class="details-para">Don’t let users down because they can’t access the most advanced Reading Systems.</span>
+        	</span>
+        </label>
+        
+        <label>
         	<input type="checkbox" name="javascript" value="externalJS"/>
         	<span class="checker"></span>
         	<span class="summary">Use an external javascript file</span>
@@ -588,19 +603,17 @@
         		<span class="details-para">Check if your eBook file doesn’t contain bottlenecks slowing user settings down.</span>
         	</span>
         </label>
-        
+     
         <label>
-        	<input type="checkbox" name="qa" value="enhancement"/>
+        	<input type="checkbox" name="qa" value="bloat"/>
         	<span class="checker"></span>
-        	<span class="summary">Ensure your eBook works well if JavaScript is not supported</span>
+        	<span class="summary">Consider the size of your EPUB&nbsp;file</span>
         	<span class="details">
-        		<span class="details-para">What if a script is running in the background while the Reading System doesn’t even support the feature you’re relying upon? That would waste quite a lot of ressources, right?</span>
+        		<span class="details-para">Sure, eBookStores set an upper limit but does it mean you should publish a 650&nbsp;MB or 2&nbsp;GB file?</span>
         		
-        		<span class="details-para">Your scripts should be built around features, which means you <a href="http://www.html5rocks.com/en/tutorials/detection/">detect those features first</a> and run the script accordingly.</span>
-        		
-        		<span class="details-para">And since “no JavaScript” is quite the standard in practice, you should consider scripting as a <a href="https://www.smashingmagazine.com/2009/04/progressive-enhancement-what-it-is-and-how-to-use-it/">progressive enhancement.</a></span>
-        		
-        		<span class="details-para">Don’t let users down because they can’t access the most advanced Reading Systems.</span>
+        		<span class="details-para">The bigger your EPUB file, the harder some Reading Systems may fall.</span>
+
+        		<span class="details-para">And it’s a User eXperience issue as well: this will probably take forever to download then bloat the user’s device, etc. Don’t forget a lot of Android devices out there currently ship with just 8–16&nbsp;GB of storage.</span>
         	</span>
         </label>
       </div>
@@ -613,7 +626,7 @@
   </main>
 
   <footer>
-  	<p class="secondary">Version 0.40 (codename “<abbr title="Minimum Viable Product">MVP</abbr>”)<br/><a href="https://github.com/FriendsOfEpub/eBookPerfChecklist/blob/master/LICENSE">LGPLv3 Licence</a> | <a href="https://github.com/FriendsOfEpub/eBookPerfChecklist">Source</a></p>
+  	<p class="secondary">Version 0.41 (codename “<abbr title="Minimum Viable Product">MVP</abbr>”)<br/><a href="https://github.com/FriendsOfEpub/eBookPerfChecklist/blob/master/LICENSE">LGPLv3 Licence</a> | <a href="https://github.com/FriendsOfEpub/eBookPerfChecklist">Source</a></p>
     <p class="secondary">This tool is part of the <a href="https://github.com/FriendsOfEpub/Blitz">Blitz eBook Framework</a></p>
   </footer>
   
