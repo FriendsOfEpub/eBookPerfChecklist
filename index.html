@@ -626,7 +626,7 @@
   </main>
 
   <footer>
-  	<p class="secondary">Version 0.42 (codename “<abbr title="Minimum Viable Product">MVP</abbr>”)<br/><a href="https://github.com/FriendsOfEpub/eBookPerfChecklist/blob/master/LICENSE">LGPLv3 Licence</a> | <a href="https://github.com/FriendsOfEpub/eBookPerfChecklist">Source</a></p>
+  	<p class="secondary">Version 0.50 (codename “<abbr title="Minimum Viable Product">MVP</abbr>”)<br/><a href="https://github.com/FriendsOfEpub/eBookPerfChecklist/blob/master/LICENSE">LGPLv3 Licence</a> | <a href="https://github.com/FriendsOfEpub/eBookPerfChecklist">Source</a></p>
     <p class="secondary">This tool is part of the <a href="https://github.com/FriendsOfEpub/Blitz">Blitz eBook Framework</a></p>
   </footer>
   
@@ -634,6 +634,11 @@
   <script type="text/javascript">
   if (navigator.serviceWorker) {
     navigator.serviceWorker.register('/eBookPerfChecklist/sw.js', {scope: '/eBookPerfChecklist/'})
+  } else if ('applicationCache' in window) {
+    var iframe = document.createElement('iframe');
+    iframe.setAttribute('src', '/eBookPerfChecklist/appcache.html');
+    iframe.setAttribute('style', 'width: 0; height: 0; border: 0');
+    document.querySelector('footer').appendChild(iframe);
   }
   </script>
 </body>
