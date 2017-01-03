@@ -25,13 +25,13 @@ Don’t worry, your checklist is autosaved: you can close this website, your cur
 
 If you’re on iOS/Android/Windows 8–10, you can actually install this web app. Just visit the page and “Add to homescreen”.
 
-Thanks to service workers, it will even work offline on Android, Chrome, Opera or Firefox (connection required on iOS).
+Thanks to service workers, it will even work offline on Android, Chrome, Opera or Firefox (appcache fallback for iOS).
 
 ## Summary
 
-The eBook Performance Checklist is part of the Blitz Project. It’s a progressive web app which aims is to help you boost your eBooks’ performance.
+The eBook Performance Checklist is part of the Blitz Project. It’s a progressive web app which aim is to help you boost your eBooks’ performance.
 
-It is currently in v.0.41 (Marble Marshmallow) and available [on this page](https://friendsofepub.github.io/eBookPerfChecklist/).
+It is currently in v.0.51 (Notorious Nacho) and available [on this page](https://friendsofepub.github.io/eBookPerfChecklist/).
 
 ## Details
 
@@ -39,7 +39,7 @@ This web app is just a glorified form with checkboxes.
 
 - We’re using JS to toggle details.
 - We’re using `localStorage` (with cookie fallback) to store checked checkboxes + progress (bar’s width).
-- We’re using Service Workers to make it work offline—when supported.
+- We’re using Service Workers and appcache (fallback) to make it work offline.
 - Keyboard features are implemented via JS when needed.
 
 And that’s it. 
