@@ -274,9 +274,11 @@
         <label>
         	<input type="checkbox" name="images" value="weight"/>
         	<span class="checker"></span>
-        	<span class="summary">Try to export images which are less than 300&nbsp;<abbr title="Kilobytes">KB</abbr></span>
+        	<span class="summary">Try to export images which are less than 300&nbsp;<abbr title="Kilobytes">KB</abbr> and 3&nbsp;million pixels</span>
         	<span class="details">
-        		<span class="details-para">The lighter, the better… especially as older reading systems can’t cope with more than 300&nbsp;<abbr title="Kilobytes">KB</abbr> and may crash.</span>
+						<span class="details-para">The lighter, the better… especially as older reading systems can’t cope with more than 300&nbsp;<abbr title="Kilobytes">KB</abbr> and may crash.</span>
+						
+						<span class="details-para">Unfortunately, those older reading systems can’t reasonably cope with images which are more than 3&nbsp;millions pixels as well. So if you are targeting them, you’ll have to enforce this limit. Otherwise, it will take an awful amount of time to display them.</span>
         	</span>
         </label>
         
@@ -628,7 +630,7 @@
   </main>
 
   <footer>
-  	<p class="secondary">Version 0.51 (codename “<abbr title="Work In Progress">WIP</abbr>”)<br/><a href="https://github.com/FriendsOfEpub/eBookPerfChecklist/blob/master/LICENSE">LGPLv3 Licence</a> | <a href="https://github.com/FriendsOfEpub/eBookPerfChecklist">Source</a></p>
+  	<p class="secondary">Version 0.52 (codename “Lazy Lasagna”)<br/><a href="https://github.com/FriendsOfEpub/eBookPerfChecklist/blob/master/LICENSE">LGPLv3 Licence</a> | <a href="https://github.com/FriendsOfEpub/eBookPerfChecklist">Source</a></p>
     <p class="secondary">This tool is part of the <a href="https://github.com/FriendsOfEpub/Blitz">Blitz eBook Framework</a></p>
   </footer>
   
