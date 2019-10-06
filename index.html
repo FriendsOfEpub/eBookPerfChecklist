@@ -80,11 +80,9 @@
         <label>
         	<input type="checkbox" name="html" value="lang"/>
         	<span class="checker"></span>
-        	<span class="summary">Declare language on the <code>html</code> and <code>body</code> tags</span>
-        	<span class="details">
-        		<span class="details-para">If it is not declared, that will impact hyphenation and text-to-speech (<a href="http://kb.daisy.org/publishing/docs/html/lang.html">source</a>).</span>
-        		
-        		<span class="details-para">Some Reading Systems will try to add it by themselves if there isn’t any, which requires some resources since it is usually achieved through scripts when injecting contents.</span>        		
+        	<span class="summary">Declare the language of your documents</span>
+        	<span class="details">        		
+        		<span class="details-para">Some Reading Systems will try to add it by themselves if there isn’t any as hyphenation and text-to-speech rely on it, which requires some resources since it is usually achieved through scripts when loading contents.</span>        		
         	</span>
         </label>
       </div>
@@ -265,7 +263,7 @@
         	<span class="checker"></span>
         	<span class="summary">Save images for the web</span>
         	<span class="details">
-        		<span class="details-para">Photo editor apps usually ship with custom exports for the web; image’s loading and rendering is quite expensive so take advantage of those ones.</span>
+        		<span class="details-para">Photo editor apps usually ship with custom exports for the web; image’s loading and rendering can be quite expensive for some devices so take advantage of those exports.</span>
         	</span>
         </label>
         
@@ -318,7 +316,7 @@
         	<span class="details">
         		<span class="details-para"><abbr title="Scalable Vector Graphics">SVG</abbr> can scale and look great at any resolution. It doesn’t need 5 million pixels for outstanding rendering in fullscreen.</span>
         		
-        		<span class="details-para">Also, they can be applied directly on the page, which means you don’t need an additional request, unlike images.</span>
+        		<span class="details-para">Also, they can be inlined in your HTML documents, which means you won’t need an additional request, unlike images.</span>
         	</span>
         </label>
         
@@ -395,7 +393,7 @@
         	<span class="checker"></span>
         	<span class="summary">Create and follow a performance budget</span>
         	<span class="details">
-        		<span class="details-para">Quite often, Reading Systems are partly built using JavaScript, which means your <a href="https://timkadlec.com/2013/01/setting-a-performance-budget/">performance budget</a> is pretty tight.</span>
+        		<span class="details-para">Reading Systems supporting JavaScript are themselves partly built using JavaScript, which means your <a href="https://timkadlec.com/2013/01/setting-a-performance-budget/">performance budget</a> is pretty tight.</span>
         		
         		<span class="details-para">You’d better create a performance budget as low end devices will undoubtedly suffer.</span>
         	</span>
@@ -406,7 +404,7 @@
         	<span class="checker"></span>
         	<span class="summary">Try to avoid frameworks and plugins</span>
         	<span class="details">
-        		<span class="details-para">Since Reading Systems are often built using frameworks (Prototype, jQuery, etc.), the performance hit is quite significant before you even throw your own scripts in.</span>
+        		<span class="details-para">Since Reading Systems are also often built using frameworks (Prototype, jQuery, etc.), the performance hit is quite significant before you even throw your own scripts in.</span>
         		
         		<span class="details-para"><a href="http://youmightnotneedjquery.com">You might not need jQuery</a> and plugins are often used as mere shortcuts… You probably won’t use more than 10% of their features but you’ll impose their burden (weight) on users.</span>
         		
@@ -455,19 +453,6 @@
         		<span class="details-para">Avoid creating accidental global variables, running unnecessary timers or keeping references that are not in the DOM anymore.</span>
         		
         		<span class="details-para">Garbage collection <abbr title="For The Win">FTW</abbr>!</span>
-        	</span>
-        </label>
-        
-        <label>
-        	<input type="checkbox" name="javascript" value="clickTouch"/>
-        	<span class="checker"></span>
-        	<span class="summary">Ensure you add event listeners for both mouse and touch</span>
-        	<span class="details">
-        		<span class="details-para">Don’t rely on false assumptions.</span>
-        		
-        		<span class="details-para">Touch support doesn’t necessarily mean touch is the only input available on a device (e.g. stylus, laptops with a touchscreen, etc.). In other words, you’d better design input-agnostic scripts.</span>
-        		
-        		<span class="details-para">Of course you might fear the <code>click</code> event fires twice or your eBook is not responsive enough but there are <a href="https://hacks.mozilla.org/2013/04/detecting-touch-its-the-why-not-the-how/" title="Detecting touch: it's the 'why', not the 'how'">several ways to get around those issues.</a></span>
         	</span>
         </label>
         
@@ -628,7 +613,7 @@
   </main>
 
   <footer>
-  	<p class="secondary">Version 1.0<br/><a href="https://github.com/FriendsOfEpub/eBookPerfChecklist/blob/master/LICENSE">LGPLv3 Licence</a> | <a href="https://github.com/FriendsOfEpub/eBookPerfChecklist">Source</a></p>
+  	<p class="secondary">Version 1.0.1<br/><a href="https://github.com/FriendsOfEpub/eBookPerfChecklist/blob/master/LICENSE">LGPLv3 Licence</a> | <a href="https://github.com/FriendsOfEpub/eBookPerfChecklist">Source</a></p>
     <p class="secondary">This tool is part of the <a href="https://github.com/FriendsOfEpub/Blitz">Blitz eBook Framework</a></p>
   </footer>
   
