@@ -21,9 +21,10 @@ r(function() {
 			checked = 0,
 			progress = 0;
 			
-	var isFirefox = false,
-	    isChrome = false,
-			isEdge = false;
+	var isFirefox = false;
+
+	var mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)'),
+			noMotion = false;
 	
 	// POLYFILLS
 	
@@ -132,22 +133,20 @@ r(function() {
 	};
   
 	function scrollTo(element, to, duration) {
-		if (duration <= 0) return;
-		var difference = to - element.scrollTop;
-		var perTick = difference / duration * 10;
-		setTimeout(function() {
-			element.scrollTop = element.scrollTop + perTick;
-			if (element.scrollTop == to) return;
-			scrollTo(element, to, duration - 10);
-		}, 10);
+		if (!noMotion) {
+			if (duration <= 0) return;
+			var difference = to - element.scrollTop;
+			var perTick = difference / duration * 10;
+			setTimeout(function() {
+				element.scrollTop = element.scrollTop + perTick;
+				if (element.scrollTop == to) return;
+				scrollTo(element, to, duration - 10);
+			}, 10);
+		}
 	};
 
 	function scrollTop() {
-	  if (isFirefox && !isEdge || isChrome && !isEdge) {
-    	scrollTo(document.getElementsByTagName('html')[0], form.offsetTop, 600);
-		} else {
-			scrollTo(document.body, form.offsetTop, 600);
-		}
+    scrollTo(document.scrollingElement, form.offsetTop, 600);
 	};
 	
 	function focusNoScroll(el) {
@@ -223,12 +222,16 @@ r(function() {
 				}, 600);	
 			}
 		}
-		if (isFirefox && !isEdge || isChrome && !isEdge) {
-			scrollTo(document.getElementsByTagName('html')[0], nextSection.offsetTop, 600);
-		} else {
-			scrollTo(document.body, nextSection.offsetTop, 600);
-		}
+		scrollTo(document.scrollingElement, nextSection.offsetTop, 600);
 	};
+
+	function changeMotionHook() {
+		if (mediaQuery.matches) {
+			noMotion = true;
+		} else {
+			noMotion = false;
+		}
+	}
 
 	// INIT (run on doc Ready)
 	
@@ -238,16 +241,8 @@ r(function() {
 		}
 	})();
 
-	(function checkChrome() {
-		if (navigator.userAgent.toLowerCase().indexOf('chrome') > -1) {
-			isChrome = true;
-		}
-	})();
-
-	(function checkEdge() {
-		if (navigator.userAgent.toLowerCase().indexOf('edge') > -1) {
-			isEdge = true;
-		}
+	(function initMotionHook() {
+		changeMotionHook();
 	})();
 		
 	(function hideDetails() {
@@ -348,6 +343,8 @@ r(function() {
 	})();
 	
 	// Event Listeners 
+
+	mediaQuery.addListener(changeMotionHook);
 	
 	form.addEventListener('click', function(e) {
 		var elt = e.target;
