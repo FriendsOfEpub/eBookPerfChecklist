@@ -329,7 +329,7 @@ r(function() {
   		+ '<li>press “tab” to navigate items</li>'
   		+ '<li>press “enter” to check</li>'
   		+ '<li>press “space” to display details</li>'
-  		+ '<li>press “backspace” to reset the checklist</li>'
+  		+ '<li>press “esc” to reset the checklist</li>'
   		+ '</ul>'
   		+ '<p>Don’t worry, your checklist is autosaved: you can close this page, your current checklist will be retrieved when reopened.</p>'	
   		+ '<p>Finally, you can install this web app on iOS and Android. And if you’re using Chrome, Firefox or Opera, it will also be available offline.</p>'
@@ -395,11 +395,12 @@ r(function() {
 	function keyboardHandler(e) {
 		var active = document.activeElement;
 		var isCheckbox = (active.type === 'checkbox');
-		var pressBackspace = (e.key === 'Backspace' || e.keyCode === 8);
 		var pressEnter = (e.key === 'Enter' || e.keyCode === 13);
+		var pressEscape = (e.key === 'Escape' || e.keyCode === 27);
 		var pressSpacebar = (e.key === 'Spacebar' || e.keyCode === 32);
 		
-		if (pressBackspace) {
+		if (pressEscape) {
+			e.preventDefault();
 			resetChecklist();
 			if (isFirefox) {
 				active.blur();
