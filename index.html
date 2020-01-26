@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <title>BlitzChecklist — My Checklist App</title>
+  <title>BlitzOptim — The ebook Performance Checklist</title>
   <meta charset="utf-8">
-  <meta name="description" content="Small description of my app for SEO">
+  <meta name="description" content="A checklist app that helps you design more performant ebooks.">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" type="text/css" href="css/styles.css" />
   <link rel="stylesheet" type="text/css" href="css/print.css" media="print" />
@@ -19,44 +19,475 @@
   <!-- Apple -->
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
-  <meta name="apple-mobile-web-app-title" content="BlitzChecklist">
+  <meta name="apple-mobile-web-app-title" content="BlitzOptim">
   <link rel="apple-touch-icon" href="assets/icons/icon-256x256.png">
   <!-- MS -->
   <meta name="msapplication-TileImage" content="assets/icons/icon-256x256.png">
   <meta name="msapplication-TileColor" content="#222222">
-  <meta name="application-name" content="BlitzChecklist">
+  <meta name="application-name" content="BlitzOptim">
 </head>
 <body>
   <header>
-    <img class="header-icon" alt="BlitzChecklist" src="assets/logo.svg"/>
-    <h1>My Checklist App</h1>
-    <p class="lead">My lead/longer description for the introduction.</p>
+    <img class="header-icon" alt="BlitzOptim" src="assets/logo.svg"/>
+    <h1>The ebook Performance Checklist</h1>
+    <p class="lead"><a href='https://medium.com/@jiminypan/lets-talk-about-ebook-performance-801b83745ea4#.wn5rj89l3'>Achieving good perceived performance in ebooks can be tough.</a> Reading&nbsp;Systems constrain your performance budget and if you’re not careful enough, your users will suffer. We’re glad to help with this checklist!</p>
   </header>
   <main>
     <form id="checklist" name="checklist">
-      <section id="category1-list" data-skippable="false">
+      <section id="html-list" data-skippable="false">
         <div class="wrapper">
-          <h2 id="category1-heading">Section 1</h2>
+          <h2 id="html-heading"><abbr title='HyperText Markup Language'>HTML</abbr></h2>
           <label>
-            <input type="checkbox" name="category1" value="test"/>
+            <input type="checkbox" name="html" value="tags"/>
             <span class="checker"></span>
-            <span class="summary">Click to test details</span>
+            <span class="summary">Get rid of useless tags</span>
             <span class="details">
-              <span class="details-para">Here are some details.</span>   
+              <span class="details-para">Each tag will create a new element node (with the corresponding text and attributes nodes).</span>   
+              <span class="details-para">While this shouldn’t be a problem in theory, it may cripple performance once bottlenecks are piling up, especially when <a href='http://epubsecrets.com/what-ibooks-does-behind-the-scenes.php'>Reading Systems are manipulating those nodes before you do.</a></span>   
+            </span>
+          </label>
+          <label>
+            <input type="checkbox" name="html" value="markup"/>
+            <span class="checker"></span>
+            <span class="summary">Ensure semantic markup</span>
+            <span class="details">
+              <span class="details-para">More and more, Reading Systems tend to rely on <abbr title='HyperText Markup Language'>HTML</abbr>&nbsp;5 suggested rendering, which means you can benefit from it. It’s just about building on top of it.</span>   
+              <span class="details-para">And it will be easier for <abbr title='Reading Systems'>RS</abbr> to apply user settings too.</span>   
+              <span class="details-para">Besides, proper <a href='http://html5doctor.com'>semantic markup</a> helps with accessibility since you don’t have to rely on aria roles.</span>   
+            </span>
+          </label>
+          <label>
+            <input type="checkbox" name="html" value="limit"/>
+            <span class="checker"></span>
+            <span class="summary">Ensure each <abbr title='HyperText Markup Language'>HTML</abbr> file is less than 250&nbsp;<abbr title='Kilobytes'>KB</abbr></span>
+            <span class="details">
+              <span class="details-para">It is known older Reading Systems can’t cope with content above 300&nbsp;<abbr title='Kilobytes'>KB</abbr>. But that can already be too much in case you’ve got a lot of images in one single <abbr title='HyperText Markup Language'>HTML</abbr> file.</span>   
+              <span class="details-para">In other words, you should divide and conquer.</span>   
+            </span>
+          </label>
+          <label>
+            <input type="checkbox" name="html" value="lang"/>
+            <span class="checker"></span>
+            <span class="summary">Declare the language of your documents</span>
+            <span class="details">
+              <span class="details-para">Some Reading Systems will try to add it by themselves if there isn’t any as hyphenation and text-to-speech rely on it, which requires some resources since it is usually achieved through scripts when loading contents.</span>   
             </span>
           </label>
         </div>
       </section>
-      <section id="category2-list" data-skippable="true">
+      <section id="css-list" data-skippable="false">
         <div class="wrapper">
-          <h2 id="category2-heading">Section 2 (skippable)</h2>
+          <h2 id="css-heading"><abbr title='Cascading Style Sheets'>CSS</abbr></h2>
           <label>
-            <input type="checkbox" name="category2" value="another"/>
+            <input type="checkbox" name="css" value="cascade"/>
             <span class="checker"></span>
-            <span class="summary">Click one more time</span>
+            <span class="summary">Leverage inheritance and the cascade</span>
             <span class="details">
-              <span class="details-para">Here are some details.</span>   
-              <span class="details-para">And here are others.</span>   
+              <span class="details-para">This is all about the <abbr title='Don’t Repeat Yourself'>DRY</abbr> concept.</span>   
+              <span class="details-para">By leveraging the cascade, you avoid cruft and end up with a lighter stylesheet.</span>   
+              <span class="details-para"><abbr title='Cascading Style Sheets'>CSS</abbr> was designed for documents, ebooks are documents. It’s a match made in heaven.</span>   
+            </span>
+          </label>
+          <label>
+            <input type="checkbox" name="css" value="selectors"/>
+            <span class="checker"></span>
+            <span class="summary">Simplify overqualified selectors</span>
+            <span class="details">
+              <span class="details-para">It should <a href='http://csswizardry.com/2012/11/code-smells-in-css/'>not have a huge performance impact</a> but once again, Reading Systems are a strange beast.</span>   
+            </span>
+          </label>
+          <label>
+            <input type="checkbox" name="css" value="attribute"/>
+            <span class="checker"></span>
+            <span class="summary">Avoid [attribute] selectors whenever possible</span>
+            <span class="details">
+              <span class="details-para">Compared to tags, classes and ids, attribute selectors might be <a href='http://scope.bitbucket.org/tests/selector-matching-performance/'>5&nbsp;times less performant on desktop and 10&nbsp;times less performant on mobile</a>.</span>   
+              <span class="details-para">When your performance budget is constrained, that can make a huge difference.</span>   
+            </span>
+          </label>
+          <label>
+            <input type="checkbox" name="css" value="float"/>
+            <span class="checker"></span>
+            <span class="summary">Ensure each <abbr title='HyperText Markup Language'>HTML</abbr> file doesn’t contain too many elements with <code>float</code></span>
+            <span class="details">
+              <span class="details-para"><code>float</code> can become an issue in older Reading Systems, especially on eInk Readers: too much floats in one <abbr title='HyperText Markup Language'>HTML</abbr> file and turning a page might take up to 5&nbsp;seconds.</span>   
+            </span>
+          </label>
+          <label>
+            <input type="checkbox" name="css" value="opacity"/>
+            <span class="checker"></span>
+            <span class="summary">Ensure each <abbr title='HyperText Markup Language'>HTML</abbr> file doesn’t contain too many elements with <code>opacity</code></span>
+            <span class="details">
+              <span class="details-para"><code>opacity</code> can become an issue in older Reading Systems. That may even <a href='https://github.com/dvschultz/99problems/issues/37'>crash some apps or devices.</a></span>   
+            </span>
+          </label>
+          <label>
+            <input type="checkbox" name="css" value="stylesheets"/>
+            <span class="checker"></span>
+            <span class="summary">Try to limit the number of <abbr title='Cascading Style Sheets'>CSS</abbr> files you’re linking (1-2&nbsp;max)</span>
+            <span class="details">
+              <span class="details-para">Multiple stylesheets are known to be <a href='https://github.com/dvschultz/99problems/issues/31'>problematic in older Reading Systems as they affect anchor links.</a></span>   
+              <span class="details-para">Moreover, your single stylesheet will be cached and users won’t need to request a new stylesheet for each section.</span>   
+              <span class="details-para">Chances are the weight of your ebook stylesheet won’t be an issue—as long as you are taking advantage of the cascade—while multiple stylesheets could.</span>   
+              <span class="details-para">Please also note the performance of <code>@import</code> is really bad.</span>   
+            </span>
+          </label>
+          <label>
+            <input type="checkbox" name="css" value="rules"/>
+            <span class="checker"></span>
+            <span class="summary">Get rid of unused rules</span>
+            <span class="details">
+              <span class="details-para">Reading Systems will have less matching to do. That may <a href='http://perfectionkills.com/profiling-css-for-fun-and-profit-optimization-notes/'>affect rendering time dramatically.</a></span>   
+            </span>
+          </label>
+          <label>
+            <input type="checkbox" name="css" value="validation"/>
+            <span class="checker"></span>
+            <span class="summary">Validate your stylesheets</span>
+            <span class="details">
+              <span class="details-para">Some older <abbr title='Reading Systems'>RS</abbr> will drop your entire stylesheet if they encounter an error, which implies one file will be requested for nothing.</span>   
+              <span class="details-para">As for other <abbr title='Reading Systems'>RS</abbr>, don’t let them pause and throw an error in the console while parsing your stylesheet.</span>   
+            </span>
+          </label>
+          <label>
+            <input type="checkbox" name="css" value="minifyCSS"/>
+            <span class="checker"></span>
+            <span class="summary">Minify your <abbr title='Cascading Style Sheets'>CSS</abbr> files</span>
+            <span class="details">
+              <span class="details-para">Reading Systems don’t need spaces, tabs and comments for readability.</span>   
+              <span class="details-para"><a href='https://cssminifier.com'>Minify your <abbr title='Cascading Style Sheets'>CSS</abbr></a> so that its impact is the smallest possible.</span>   
+            </span>
+          </label>
+        </div>
+      </section>
+      <section id="fonts-list" data-skippable="false">
+        <div class="wrapper">
+          <h2 id="fonts-heading">Fonts</h2>
+          <label>
+            <input type="checkbox" name="fonts" value="drop"/>
+            <span class="checker"></span>
+            <span class="summary">Consider dropping fonts which are not necessary</span>
+            <span class="details">
+              <span class="details-para">Chances are users will pick the typeface they prefer in the settings. Is it really necessary to embed fonts for body copy then?</span>   
+            </span>
+          </label>
+          <label>
+            <input type="checkbox" name="fonts" value="subset"/>
+            <span class="checker"></span>
+            <span class="summary">Subset embedded fonts</span>
+            <span class="details">
+              <span class="details-para">You probably don’t need all glyphs and characters so you could save some weight—for instance, <abbr title='Chinese, Japanese and Korean'>CJK</abbr> fonts can be 10&nbsp;<abbr title='Megabytes'>MB</abbr>!</span>   
+            </span>
+          </label>
+          <label>
+            <input type="checkbox" name="fonts" value="stacks"/>
+            <span class="checker"></span>
+            <span class="summary">Provide sensible font-stacks for your custom fonts</span>
+            <span class="details">
+              <span class="details-para">This is all about preparing for the future.</span>   
+              <span class="details-para">Custom fonts slow down pages because they are additional resources.</span>   
+              <span class="details-para">Should <a href='https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display'><code>font-display</code> become the new standard</a> and Reading Systems be impacted, you’ll be covered.</span>   
+            </span>
+          </label>
+        </div>
+      </section>
+      <section id="images-list" data-skippable="false">
+        <div class="wrapper">
+          <h2 id="images-heading">Images</h2>
+          <label>
+            <input type="checkbox" name="images" value="format"/>
+            <span class="checker"></span>
+            <span class="summary">Ensure the best format is used for each image</span>
+            <span class="details">
+              <span class="details-para"><abbr title='Joint Photographic Experts Group'>JPEG</abbr>, <abbr title='Portable Network Graphics'>PNG</abbr> and <abbr title='Graphics Interchange Format'>GIF</abbr> all have their pros and cons.</span>   
+              <span class="details-para">If you don’t need transparency or gorgeous text rendering, why should you use <abbr title='Portable Network Graphics'>PNG</abbr>, which is usually bigger than <abbr title='Joint Photographic Experts Group'>JPEG</abbr>?</span>   
+              <span class="details-para">And maybe you don’t need more than 256 colors, which means <abbr title='Graphics Interchange Format'>GIF</abbr> could be the best option?</span>   
+              <span class="details-para">By carefully picking the best format for each image, you can save megabytes!</span>   
+            </span>
+          </label>
+          <label>
+            <input type="checkbox" name="images" value="dimensions"/>
+            <span class="checker"></span>
+            <span class="summary">Optimize dimensions</span>
+            <span class="details">
+              <span class="details-para">Should a small decoration be 5 million pixels?</span>   
+            </span>
+          </label>
+          <label>
+            <input type="checkbox" name="images" value="web"/>
+            <span class="checker"></span>
+            <span class="summary">Save images for the web</span>
+            <span class="details">
+              <span class="details-para">Photo editor apps usually ship with custom exports for the web; image’s loading and rendering can be quite expensive for some devices so take advantage of those exports.</span>   
+            </span>
+          </label>
+          <label>
+            <input type="checkbox" name="images" value="weight"/>
+            <span class="checker"></span>
+            <span class="summary">Try to export images which are less than 300&nbsp;<abbr title='Kilobytes'>KB</abbr> and 3&nbsp;million pixels</span>
+            <span class="details">
+              <span class="details-para">The lighter, the better… especially as older reading systems can’t cope with more than 300&nbsp;<abbr title='Kilobytes'>KB</abbr> and may crash.</span>   
+              <span class="details-para">Unfortunately, those older reading systems can’t reasonably cope with images which are more than 3&nbsp;millions pixels as well. So if you are targeting them, you’ll have to enforce this limit. Otherwise, it will take an awful amount of time to display them.</span>   
+            </span>
+          </label>
+          <label>
+            <input type="checkbox" name="images" value="optimizeImg"/>
+            <span class="checker"></span>
+            <span class="summary">Optimize your images</span>
+            <span class="details">
+              <span class="details-para">Export for the web is good but it’s not good enough. And that’s why utilities like <a href='https://imageoptim.com/mac'>ImageOptim</a>, <a href='https://github.com/mozilla/mozjpeg'>MozJPEG</a> or <a href='https://pngquant.org'>pngquant</a> are available.</span>   
+              <span class="details-para">Those utilities rely on powerful algorithms which can save a few more kilobytes.</span>   
+            </span>
+          </label>
+          <label>
+            <input type="checkbox" name="images" value="nightMode"/>
+            <span class="checker"></span>
+            <span class="summary">Consider the rendering of your images in night mode</span>
+            <span class="details">
+              <span class="details-para">Once again, prepare for the future.</span>   
+              <span class="details-para">Let’s imagine you don’t care about night mode and your images are unreadable. Then, Reading System developers will use <abbr title='Cascading Style Sheets'>CSS</abbr> filters…</span>   
+              <span class="details-para">Unfortunately, you can expect a <a href='https://davidwalsh.name/css-filters'>performance hit with heavy <abbr title='Cascading Style Sheets'>CSS</abbr> filter usage.</a></span>   
+            </span>
+          </label>
+        </div>
+      </section>
+      <section id="svg-list" data-skippable="true">
+        <div class="wrapper">
+          <h2 id="svg-heading"><abbr title='Scalable Vector Graphics'>SVG</abbr></h2>
+          <label>
+            <input type="checkbox" name="svg" value="SVG"/>
+            <span class="checker"></span>
+            <span class="summary">Try to use <abbr title='Scalable Vector Graphics'>SVG</abbr> instead of images whenever possible</span>
+            <span class="details">
+              <span class="details-para"><abbr title='Scalable Vector Graphics'>SVG</abbr> can scale and look great at any resolution. It doesn’t need 5 million pixels for outstanding rendering in fullscreen.</span>   
+              <span class="details-para">Also, they can be inlined in your HTML documents, which means you won’t need an additional request, unlike images.</span>   
+            </span>
+          </label>
+          <label>
+            <input type="checkbox" name="svg" value="layers"/>
+            <span class="checker"></span>
+            <span class="summary">Get rid of useless layers in your vector drawing app</span>
+            <span class="details">
+              <span class="details-para">Dedicated apps tend to export stuff you don’t really need.</span>   
+              <span class="details-para">For instance, if you save as <abbr title='Scalable Vector Graphics'>SVG</abbr>, some apps will embed all artboards while you only need one.</span>   
+              <span class="details-para">Take that into account since there is no need for <abbr title='Extensible Markup Language'>XML</abbr> that won’t be visible in the <code>viewBox</code>.</span>   
+            </span>
+          </label>
+          <label>
+            <input type="checkbox" name="svg" value="paths"/>
+            <span class="checker"></span>
+            <span class="summary">Simplify paths</span>
+            <span class="details">
+              <span class="details-para">The simpler your paths, the lighter your <abbr title='Extensible Markup Language'>XML</abbr>.</span>   
+              <span class="details-para">Let’s make it easier for the rendering engine!</span>   
+            </span>
+          </label>
+          <label>
+            <input type="checkbox" name="svg" value="styling"/>
+            <span class="checker"></span>
+            <span class="summary">Take advantage of <abbr title='Cascading Style Sheets'>CSS</abbr></span>
+            <span class="details">
+              <span class="details-para">Some vector drawing apps will output basic shapes (<code>rect</code>, <code>circle</code>, <code>ellipse</code>, <code>polygon</code>, etc.) as paths, especially when borders are applied.</span>   
+              <span class="details-para">Now, you can style <abbr title='Scalable Vector Graphics'>SVG</abbr> with good old <abbr title='Cascading Style Sheets'>CSS</abbr>!</span>   
+              <span class="details-para">If you want to apply a border, you can just use <code>stroke</code> and <code>stroke-width</code>. As a result, your <abbr title='Scalable Vector Graphics'>SVG</abbr> will be a hell of a lot lighter and more readable.</span>   
+            </span>
+          </label>
+          <label>
+            <input type="checkbox" name="svg" value="tspan"/>
+            <span class="checker"></span>
+            <span class="summary">Consider text instead of vectors</span>
+            <span class="details">
+              <span class="details-para">Want some text to follow a path?</span>   
+              <span class="details-para">You don’t need to vectorize that, which will result in a huge <abbr title='Scalable Vector Graphics'>SVG</abbr> file (one path for each letter).</span>   
+              <span class="details-para">You can declare <code>font-family</code> for this text using <abbr title='Cascading Style Sheets'>CSS</abbr>.</span>   
+            </span>
+          </label>
+          <label>
+            <input type="checkbox" name="svg" value="optimizeSVG"/>
+            <span class="checker"></span>
+            <span class="summary">Optimize <abbr title='Scalable Vector Graphics'>SVG</abbr></span>
+            <span class="details">
+              <span class="details-para">Chances are your vector drawing app output extraneous data you don’t really need.</span>   
+              <span class="details-para">Utilites like <a href='https://jakearchibald.github.io/svgomg/'>SVGO</a> can help reduce your <abbr title='Scalable Vector Graphics'>SVG</abbr> by half.</span>   
+            </span>
+          </label>
+        </div>
+      </section>
+      <section id="js-list" data-skippable="true">
+        <div class="wrapper">
+          <h2 id="js-heading">JavaScript</h2>
+          <label>
+            <input type="checkbox" name="js" value="budget"/>
+            <span class="checker"></span>
+            <span class="summary">Create and follow a performance budget</span>
+            <span class="details">
+              <span class="details-para">Reading Systems supporting JavaScript are themselves partly built using JavaScript, which means your <a href='https://timkadlec.com/2013/01/setting-a-performance-budget/'>performance budget</a> is pretty tight.</span>   
+              <span class="details-para">You’d better create a performance budget as low end devices will undoubtedly suffer.</span>   
+            </span>
+          </label>
+          <label>
+            <input type="checkbox" name="js" value="frameworks"/>
+            <span class="checker"></span>
+            <span class="summary">Try to avoid frameworks and plugins</span>
+            <span class="details">
+              <span class="details-para">Since Reading Systems are also often built using frameworks (Prototype, jQuery, etc.), the performance hit is quite significant before you even throw your own scripts in.</span>   
+              <span class="details-para"><a href='http://youmightnotneedjquery.com'>You might not need jQuery</a> and plugins are often used as mere shortcuts… You probably won’t use more than 10% of their features but you’ll impose their burden (weight) on users.</span>   
+              <span class="details-para">If you really need a framework to achieve something, consider a <a href='http://projects.jga.me/jquery-builder/'>custom subset.</a></span>   
+            </span>
+          </label>
+          <label>
+            <input type="checkbox" name="js" value="perf"/>
+            <span class="checker"></span>
+            <span class="summary">Design your scripts with performance in mind</span>
+            <span class="details">
+              <span class="details-para">Scripting is hard.</span>   
+              <span class="details-para">While browsers’ developers are doing their utmost to achieve good performance, providing hints to JavaScript engines can speed up the execution dramatically.</span>   
+            </span>
+          </label>
+          <label>
+            <input type="checkbox" name="js" value="docReady"/>
+            <span class="checker"></span>
+            <span class="summary">Favor document ready</span>
+            <span class="details">
+              <span class="details-para">The sooner, the better… (even if you’ll probably need a timeout because Reading Systems can be funky).</span>   
+            </span>
+          </label>
+          <label>
+            <input type="checkbox" name="js" value="impact"/>
+            <span class="checker"></span>
+            <span class="summary">Check the performance impact of your scripts (debug)</span>
+            <span class="details">
+              <span class="details-para">You don’t want your scripts to screw everything up.</span>   
+              <span class="details-para">By profiling JavaScript in the browser, <a href='http://www.html5rocks.com/en/tutorials/speed/rendering/'>you’ll spot what creates jank.</a></span>   
+            </span>
+          </label>
+          <label>
+            <input type="checkbox" name="js" value="leaks"/>
+            <span class="checker"></span>
+            <span class="summary">Ensure your scripts don’t create memory leaks</span>
+            <span class="details">
+              <span class="details-para"><a href='https://auth0.com/blog/four-types-of-leaks-in-your-javascript-code-and-how-to-get-rid-of-them/'>Managing memory is mandatory</a>, especially as some mobile devices might be short on RAM.</span>   
+              <span class="details-para">Avoid creating accidental global variables, running unnecessary timers or keeping references that are not in the DOM anymore.</span>   
+              <span class="details-para">Garbage collection <abbr title='For The Win'>FTW</abbr>!</span>   
+            </span>
+          </label>
+          <label>
+            <input type="checkbox" name="js" value="events"/>
+            <span class="checker"></span>
+            <span class="summary">Avoid overriding Reading System’s default events</span>
+            <span class="details">
+              <span class="details-para">You could accidentally fire a ton of events, which might have a performance impact (e.g. interactive ebooks for which rendering is an intensive task).</span>   
+            </span>
+          </label>
+          <label>
+            <input type="checkbox" name="js" value="enhancement"/>
+            <span class="checker"></span>
+            <span class="summary">Ensure your ebook works well if JavaScript is not supported</span>
+            <span class="details">
+              <span class="details-para">What if a script is running in the background while the Reading System doesn’t even support the feature you’re relying upon? That would waste quite a lot of ressources, right?</span>   
+              <span class="details-para">Your scripts should be built around features, which means you <a href='http://www.html5rocks.com/en/tutorials/detection/'>detect those features first</a> and run the script accordingly.</span>   
+              <span class="details-para">And since “no JavaScript” is quite the standard in practice, you should consider scripting as a <a href='https://www.smashingmagazine.com/2009/04/progressive-enhancement-what-it-is-and-how-to-use-it/'>progressive enhancement.</a></span>   
+              <span class="details-para">Don’t let users down because they can’t access the most advanced Reading Systems.</span>   
+            </span>
+          </label>
+          <label>
+            <input type="checkbox" name="js" value="externalJS"/>
+            <span class="checker"></span>
+            <span class="summary">Use an external javascript file</span>
+            <span class="details">
+              <span class="details-para">An external file will be cached, inline scripts won’t.</span>   
+            </span>
+          </label>
+          <label>
+            <input type="checkbox" name="js" value="minifyJS"/>
+            <span class="checker"></span>
+            <span class="summary">Minify your <abbr title='JavaScript'>JS</abbr> files</span>
+            <span class="details">
+              <span class="details-para">Reading Systems don’t need verbose functions, spaces and tabs for the sake of readability.</span>   
+              <span class="details-para"><a href='https://jscompress.com'>By using a compression tool</a>, you can probably reduce the size of your js files by half.</span>   
+            </span>
+          </label>
+        </div>
+      </section>
+      <section id="animations-list" data-skippable="true">
+        <div class="wrapper">
+          <h2 id="animations-heading">Animations</h2>
+          <label>
+            <input type="checkbox" name="animations" value="ux"/>
+            <span class="checker"></span>
+            <span class="summary">Ensure animations are meaningful and improve <abbr title='User Experience'>UX</abbr></span>
+            <span class="details">
+              <span class="details-para">There’s nothing worse than useless animations impacting your performance budget because YOLO.</span>   
+            </span>
+          </label>
+          <label>
+            <input type="checkbox" name="animations" value="cssAnims"/>
+            <span class="checker"></span>
+            <span class="summary">Use <abbr title='Cascading Style Sheets'>CSS</abbr> instead of <abbr title='JavaScript'>JS</abbr> whenever possible</span>
+            <span class="details">
+              <span class="details-para">This myth might have been busted for the web but… Reading Systems are a lot more constrained than web browsers.</span>   
+              <span class="details-para">It should be repeated for the benefit of everyone, Reading Systems are often built using JavaScript, which means it’s a good idea to use anything else than <abbr title='JavaScript'>JS</abbr> whenever possible.</span>   
+            </span>
+          </label>
+          <label>
+            <input type="checkbox" name="animations" value="transforms"/>
+            <span class="checker"></span>
+            <span class="summary">Avoid animating properties which affect layout and paint</span>
+            <span class="details">
+              <span class="details-para">Browsers can animate transforms and <code>opacity</code> cheaply, this is not the case for properties like <code>width</code>, <code>top</code> or <code>background-image</code>.</span>   
+              <span class="details-para">Avoid properties affecting paint at any cost. Learn more at <a href='http://www.html5rocks.com/en/tutorials/speed/high-performance-animations/'>HTML5rocks</a>.</span>   
+            </span>
+          </label>
+          <label>
+            <input type="checkbox" name="animations" value="controls"/>
+            <span class="checker"></span>
+            <span class="summary">Try to provide users with controls (disabling, pausing, etc.)</span>
+            <span class="details">
+              <span class="details-para">What if the user doesn’t even want to experience animations? You could save a lot of resources!</span>   
+              <span class="details-para">If you think about it for a second, controls might turn an unpleasing experience into a readable book, especially on low end devices.</span>   
+              <span class="details-para">And don’t forget <a href='http://a11yproject.com/posts/understanding-vestibular-disorders/'>this is an accessibility issue as well.</a></span>   
+            </span>
+          </label>
+        </div>
+      </section>
+      <section id="qa-list" data-skippable="false">
+        <div class="wrapper">
+          <h2 id="qa-heading">Quality Assurance</h2>
+          <label>
+            <input type="checkbox" name="qa" value="devices"/>
+            <span class="checker"></span>
+            <span class="summary">Check your ebook on various devices, from low to high end</span>
+            <span class="details">
+              <span class="details-para">Let’s be honest, you just can’t <abbr title='Quality Assurance'>QA</abbr> your ebook file on a brand new iPhone/iPad and call it a day… A lot of people are using less capable devices in real life.</span>   
+              <span class="details-para">You should at least test your ebook on a $200 Android device and a good old eInk Reader if you want to provide users with the best possible experience.</span>   
+            </span>
+          </label>
+          <label>
+            <input type="checkbox" name="qa" value="rendering"/>
+            <span class="checker"></span>
+            <span class="summary">Check if there is no rendering issue with your custom fonts</span>
+            <span class="details">
+              <span class="details-para">Users wait extra seconds for contents to load only to see custom fonts are completely screwed up.</span>   
+              <span class="details-para">How would you feel about that as a user?</span>   
+            </span>
+          </label>
+          <label>
+            <input type="checkbox" name="qa" value="settings"/>
+            <span class="checker"></span>
+            <span class="summary">Change user settings to make sure everything is OK</span>
+            <span class="details">
+              <span class="details-para">Reading Systems sometimes reload the whole document to change <code>font-family</code>, <code>font-size</code>, etc.</span>   
+              <span class="details-para">Check if your ebook file doesn’t contain bottlenecks slowing user settings down.</span>   
+            </span>
+          </label>
+          <label>
+            <input type="checkbox" name="qa" value="bloat"/>
+            <span class="checker"></span>
+            <span class="summary">Consider the size of your EPUB&nbsp;file</span>
+            <span class="details">
+              <span class="details-para">Sure, ebookStores set an upper limit but does it mean you should publish a 650&nbsp;MB or 2&nbsp;GB file?</span>   
+              <span class="details-para">The bigger your EPUB file, the harder some Reading Systems may fall.</span>   
+              <span class="details-para">And it’s a User eXperience issue as well: this will probably take forever to download then bloat the user’s device, etc. Don’t forget a lot of Android devices out there currently ship with just 8–16&nbsp;GB of storage.</span>   
             </span>
           </label>
         </div>
@@ -66,37 +497,16 @@
       </div>
     </form>
   </main>
-<<<<<<< HEAD
-
   <footer>
-  	<p class="secondary">Version 1.0.4<br/><a href="https://github.com/FriendsOfEpub/eBookPerfChecklist/blob/master/LICENSE">LGPLv3 Licence</a> | <a href="https://github.com/FriendsOfEpub/eBookPerfChecklist">Source</a></p>
-    <p class="secondary">This tool is part of the <a href="https://github.com/FriendsOfEpub/Blitz">Blitz eBook Framework</a></p>
-  </footer>
-  
-  <script type="text/javascript" src="js/script.js"></script>
-  <script type="text/javascript">
-  if (navigator.serviceWorker) {
-    navigator.serviceWorker.register('/eBookPerfChecklist/sw.js', {scope: '/eBookPerfChecklist/'})
-  } else if ('applicationCache' in window) {
-    var iframe = document.createElement('iframe');
-    iframe.setAttribute('src', '/eBookPerfChecklist/appcache.html');
-    iframe.setAttribute('style', 'width: 0; height: 0; border: 0');
-    document.querySelector('footer').appendChild(iframe);
-  }
-  </script>
-</body>
-</html>
-=======
-  <footer>
-    <p class="secondary">Version 1.0.0</p>
-    <p class="secondary">This tool is part of the <a href='http://friendsofepub.github.io/Blitz/'>Blitz Framework.</a></p>
+    <p class="secondary">Version 2.0.0</p>
+    <p class="secondary"><a href='https://github.com/FriendsOfEpub/eBookPerfChecklist/blob/master/LICENSE'>LGPLv3 Licence</a> | <a href='https://github.com/FriendsOfEpub/eBookPerfChecklist'>Source</a></p>
+    <p class="secondary">This tool is part of the <a href='https://github.com/FriendsOfEpub/Blitz'>Blitz ebook Framework</a></p>
   </footer>
   <script type="text/javascript" src="js/script.js"></script>
   <script type="text/javascript">
     if (navigator.serviceWorker) {
-      navigator.serviceWorker.register("/blitz-checklist/sw.js", {scope: "/blitz-checklist/"})
+      navigator.serviceWorker.register("/eBookPerfChecklist/sw.js", {scope: "/eBookPerfChecklist/"})
     }
   </script>
 </body>
 </html>
->>>>>>> template/master

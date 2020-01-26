@@ -6,7 +6,7 @@ var CACHE_NAME = APP_PREFIX + VERSION
 var URLS = [
   '/eBookPerfChecklist/',
   '/eBookPerfChecklist/index.html',
-  '/eBookPerfChecklist/assets/blitz-16.svg',
+  '/eBookPerfChecklist/assets/logo.svg',
   '/eBookPerfChecklist/assets/blitzOptim-decorations.svg',
   '/eBookPerfChecklist/css/styles.css',
   '/eBookPerfChecklist/js/script.js'

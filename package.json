@@ -1,7 +1,7 @@
 {
-  "name": "blitz-checklist",
-  "version": "1.0.0",
-  "description": "A template repository to make checklist web apps",
+  "name": "blitz-optim",
+  "version": "2.0.0",
+  "description": "A progressive web app to help you boost eBook performance",
   "main": "index.html",
   "scripts": {
     "build": "mustache src/data.json src/template.mustache > index.html"
@@ -9,9 +9,10 @@
   "keywords": [
     "checklist",
     "best-practices",
-    "template",
+    "ebook",
     "blitz",
-    "PWA"
+    "PWA",
+    "performance"
   ],
   "author": {
     "name": "Jiminy Panoz",
@@ -19,10 +20,10 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/FriendsOfEpub/blitz-checklist.git"
+    "url": "https://github.com/FriendsOfEpub/eBookPerfChecklist.git"
   },
   "bugs": {
-    "url": "https://github.com/FriendsOfEpub/blitz-checklist/issues"
+    "url": "https://github.com/FriendsOfEpub/eBookPerfChecklist/issues"
   },
   "license": "MIT",
   "devDependencies": {
