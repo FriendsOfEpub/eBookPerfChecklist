@@ -1,15 +1,16 @@
 /* https://gist.github.com/kosamari/7c5d1e8449b2fbc97d372675f16b566e */
 
-var APP_PREFIX = 'blitzOptim_'
-var VERSION = 'v2_0_0'
-var CACHE_NAME = APP_PREFIX + VERSION
+var APP_PREFIX = 'blitzOptim_';
+var SCOPE = "/eBookPerfChecklist/";
+var VERSION = "v2_0_0";
+var CACHE_NAME = APP_PREFIX + VERSION;
 var URLS = [
-  '/eBookPerfChecklist/',
-  '/eBookPerfChecklist/index.html',
-  '/eBookPerfChecklist/assets/logo.svg',
-  '/eBookPerfChecklist/assets/blitzOptim-decorations.svg',
-  '/eBookPerfChecklist/css/styles.css',
-  '/eBookPerfChecklist/js/script.js'
+  SCOPE,
+  SCOPE + "index.html",
+  SCOPE + "assets/logo.svg",
+  SCOPE + "assets/blitzOptim-decorations.svg",
+  SCOPE + "css/styles.css",
+  SCOPE + "js/script.js"
 ]
 
 // Respond with cached resources
