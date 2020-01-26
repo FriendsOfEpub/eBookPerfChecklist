@@ -27,7 +27,7 @@ h1 {
 }
 
 a {
-  background-color: transparent; 
+  background-color: transparent;
   -webkit-text-decoration-skip: objects;
 }
 
@@ -83,21 +83,21 @@ svg:not(:root) {
 input,
 label,
 button {
-	margin: 0;
-	border: 0;
-	padding: 0;
-	display: block;
-	white-space: normal;
-	background: none;
-	line-height: 1.5;
-	font-size: 1.8rem;
+  margin: 0;
+  border: 0;
+  padding: 0;
+  display: block;
+  white-space: normal;
+  background: none;
+  line-height: 1.5;
+  font-size: 1.8rem;
   font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", "Segoe UI", "Roboto", sans-serif;
 }
 
 input {
-	-webkit-box-sizing: content-box;
-	-moz-box-sizing: content-box;
-	box-sizing: content-box;
+  -webkit-box-sizing: content-box;
+  -moz-box-sizing: content-box;
+  box-sizing: content-box;
 }
 
 button,
@@ -106,26 +106,26 @@ input[type=button],
 input[type=submit],
 input[type=checkbox],
 input[type=radio] {
-	-webkit-box-sizing: border-box;
-	-moz-box-sizing: border-box;
-	box-sizing: border-box;
-	-webkit-user-select:none;
-  -moz-user-select:none;
-  -ms-user-select:none;
-  user-select:none;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
 }
 
 input[type=checkbox] {
-	width: 13px;
-	height: 13px;
+  width: 13px;
+  height: 13px;
 }
 
 button,
 input[type="reset"],
 input[type="button"],
 input[type="submit"] {
-	overflow:visible;
-	width:auto;
+  overflow: visible;
+  width: auto;
 }
 
 button::-moz-focus-inner,
@@ -180,16 +180,16 @@ section {
 }
 
 form section:nth-child(odd) {
-	background-color: #FFFFFF;
-	color: #333;
+  background-color: #FFFFFF;
+  color: #333;
 }
 
 form section:nth-child(even) {
-	background-color: #EBEBEB;
+  background-color: #EBEBEB;
 }
 
 #how-to {
-	padding: 0;
+  padding: 0;
 }
 
 .help-content {
@@ -286,8 +286,8 @@ code {
 }
 
 .summary {
-	display: block;
-	font-weight: 500;
+  display: block;
+  font-weight: 500;
 }
 
 .js-enabled .summary:after {
@@ -332,7 +332,7 @@ label {
   transition: all 350ms;
 }
 
-input:checked + .checker {
+input:checked+.checker {
   background-color: black;
   transition: all 350ms;
 }
@@ -422,75 +422,75 @@ input:focus+.checker {
 
 #progress-inner {
   width: 0;
-	background-color: #FDFDFD;
-	height: 4.2rem;
-	transition: all 350ms;
+  background-color: #FDFDFD;
+  height: 4.2rem;
+  transition: all 350ms;
 }
 
-@-ms-viewport { 
-	width: device-width; 
+@-ms-viewport {
+  width: device-width;
 }
 
 h2:before {
-	content: '';
-	display: block;
-	margin: 0 auto 16px auto;
-	width: 32px;
-	height: 32px;
-	background-image: url("../assets/blitzOptim-decorations.svg");
-	opacity: 0.65;
+  content: '';
+  display: block;
+  margin: 0 auto 16px auto;
+  width: 32px;
+  height: 32px;
+  background-image: url("../assets/blitzOptim-decorations.svg");
+  opacity: 0.65;
 }
 
 #html-heading:before {
-	background-position: 0 0;
+  background-position: 0 0;
 }
 
 #css-heading:before {
-	background-position: -32px 0;
+  background-position: -32px 0;
 }
 
 #fonts-heading:before {
-	background-position: -64px 0;
+  background-position: -64px 0;
 }
 
 #images-heading:before {
-	background-position: -96px 0;
+  background-position: -96px 0;
 }
 
 #svg-heading:before {
-	background-position: -128px 0;
+  background-position: -128px 0;
 }
 
 #javascript-heading:before {
-	background-position: -160px 0;
+  background-position: -160px 0;
 }
 
 #animations-heading:before {
-	background-position: -192px 0;
+  background-position: -192px 0;
 }
 
 #qa-heading:before {
-	background-position: -224px 0;
+  background-position: -224px 0;
 }
 
 @supports (mix-blend-mode: difference) {
-	#progress-inner:after {
-	  font-weight: 600;
-		font-size: 2.4rem;
-		line-height: 1;
-		color: #FDFDFD;
-		position: relative;
-		top: 50%;
-		transform: translateY(-50%);
-		left: 1rem;
-		display: block;
-		content: attr(data-width);
-		mix-blend-mode: difference;
-	}
+  #progress-inner:after {
+    font-weight: 600;
+    font-size: 2.4rem;
+    line-height: 1;
+    color: #FDFDFD;
+    position: relative;
+    top: 50%;
+    transform: translateY(-50%);
+    left: 1rem;
+    display: block;
+    content: attr(data-width);
+    mix-blend-mode: difference;
+  }
 }
 
 @media screen and (max-width: 560px) {
-	html {
-		font-size: 50%;
-	}
+  html {
+    font-size: 50%;
+  }
 }
