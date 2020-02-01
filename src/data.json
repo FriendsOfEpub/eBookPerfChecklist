@@ -1,0 +1,449 @@
+{
+  "appName": "BlitzOptim",
+  "appVersion": "2.0.0",
+  "appDesc": "A checklist app that helps you design more performant ebooks.",
+  "appLogo": "assets/logo.svg",
+  "appScope": "/eBookPerfChecklist/",
+  "lang": "en",
+  "accentColor": "#222222",
+  "header": {
+    "title": "The ebook Performance Checklist",
+    "lead": [
+      "<a href='https://medium.com/@jiminypan/lets-talk-about-ebook-performance-801b83745ea4#.wn5rj89l3'>Achieving good perceived performance in ebooks can be tough.</a> Reading&nbsp;Systems constrain your performance budget and if you’re not careful enough, your users will suffer. We’re glad to help with this checklist!"
+    ]
+  },
+  "sections": [
+    {
+      "name": "html",
+      "skippable": false,
+      "heading": "<abbr title='HyperText Markup Language'>HTML</abbr>",
+      "rules": [
+        {
+          "value": "tags",
+          "summary": "Get rid of useless tags",
+          "details": [
+            "Each tag will create a new element node (with the corresponding text and attributes nodes).",
+            "While this shouldn’t be a problem in theory, it may cripple performance once bottlenecks are piling up, especially when <a href='http://epubsecrets.com/what-ibooks-does-behind-the-scenes.php'>Reading Systems are manipulating those nodes before you do.</a>"
+          ]
+        },
+        {
+          "value": "markup",
+          "summary": "Ensure semantic markup",
+          "details": [
+            "More and more, Reading Systems tend to rely on <abbr title='HyperText Markup Language'>HTML</abbr>&nbsp;5 suggested rendering, which means you can benefit from it. It’s just about building on top of it.",
+            "And it will be easier for <abbr title='Reading Systems'>RS</abbr> to apply user settings too.",
+            "Besides, proper <a href='http://html5doctor.com'>semantic markup</a> helps with accessibility since you don’t have to rely on aria roles."
+          ]
+        },
+        {
+          "value": "limit",
+          "summary": "Ensure each <abbr title='HyperText Markup Language'>HTML</abbr> file is less than 250&nbsp;<abbr title='Kilobytes'>KB</abbr>",
+          "details": [
+            "It is known older Reading Systems can’t cope with content above 300&nbsp;<abbr title='Kilobytes'>KB</abbr>. But that can already be too much in case you’ve got a lot of images in one single <abbr title='HyperText Markup Language'>HTML</abbr> file.",
+            "In other words, you should divide and conquer."
+          ]
+        },
+        {
+          "value": "lang",
+          "summary": "Declare the language of your documents",
+          "details": [
+            "Some Reading Systems will try to add it by themselves if there isn’t any as hyphenation and text-to-speech rely on it, which requires some resources since it is usually achieved through scripts when loading contents."
+          ]
+        }
+      ]
+    },
+    {
+      "name": "css",
+      "skippable": false,
+      "heading": "<abbr title='Cascading Style Sheets'>CSS</abbr>",
+      "rules": [
+        {
+          "value": "cascade",
+          "summary": "Leverage inheritance and the cascade",
+          "details": [
+            "This is all about the <abbr title='Don’t Repeat Yourself'>DRY</abbr> concept.",
+            "By leveraging the cascade, you avoid cruft and end up with a lighter stylesheet.",
+            "<abbr title='Cascading Style Sheets'>CSS</abbr> was designed for documents, ebooks are documents. It’s a match made in heaven."
+          ]
+        },
+        {
+          "value": "selectors",
+          "summary": "Simplify overqualified selectors",
+          "details": [
+            "It should <a href='http://csswizardry.com/2012/11/code-smells-in-css/'>not have a huge performance impact</a> but once again, Reading Systems are a strange beast."
+          ]
+        },
+        {
+          "value": "attribute",
+          "summary": "Avoid [attribute] selectors whenever possible",
+          "details": [
+            "Compared to tags, classes and ids, attribute selectors might be <a href='http://scope.bitbucket.org/tests/selector-matching-performance/'>5&nbsp;times less performant on desktop and 10&nbsp;times less performant on mobile</a>.",
+            "When your performance budget is constrained, that can make a huge difference."
+          ]
+        },
+        {
+          "value": "float",
+          "summary": "Ensure each <abbr title='HyperText Markup Language'>HTML</abbr> file doesn’t contain too many elements with <code>float</code>",
+          "details": [
+            "<code>float</code> can become an issue in older Reading Systems, especially on eInk Readers: too much floats in one <abbr title='HyperText Markup Language'>HTML</abbr> file and turning a page might take up to 5&nbsp;seconds."
+          ]
+        },
+        {
+          "value": "opacity",
+          "summary": "Ensure each <abbr title='HyperText Markup Language'>HTML</abbr> file doesn’t contain too many elements with <code>opacity</code>",
+          "details": [
+            "<code>opacity</code> can become an issue in older Reading Systems. That may even <a href='https://github.com/dvschultz/99problems/issues/37'>crash some apps or devices.</a>"
+          ]
+        },
+        {
+          "value": "stylesheets",
+          "summary": "Try to limit the number of <abbr title='Cascading Style Sheets'>CSS</abbr> files you’re linking (1-2&nbsp;max)",
+          "details": [
+            "Multiple stylesheets are known to be <a href='https://github.com/dvschultz/99problems/issues/31'>problematic in older Reading Systems as they affect anchor links.</a>",
+            "Moreover, your single stylesheet will be cached and users won’t need to request a new stylesheet for each section.",
+            "Chances are the weight of your ebook stylesheet won’t be an issue—as long as you are taking advantage of the cascade—while multiple stylesheets could.",
+            "Please also note the performance of <code>@import</code> is really bad."
+          ]
+        },
+        {
+          "value": "rules",
+          "summary": "Get rid of unused rules",
+          "details": [
+            "Reading Systems will have less matching to do. That may <a href='http://perfectionkills.com/profiling-css-for-fun-and-profit-optimization-notes/'>affect rendering time dramatically.</a>"
+          ]
+        },
+        {
+          "value": "validation",
+          "summary": "Validate your stylesheets",
+          "details": [
+            "Some older <abbr title='Reading Systems'>RS</abbr> will drop your entire stylesheet if they encounter an error, which implies one file will be requested for nothing.",
+            "As for other <abbr title='Reading Systems'>RS</abbr>, don’t let them pause and throw an error in the console while parsing your stylesheet."
+          ]
+        },
+        {
+          "value": "minifyCSS",
+          "summary": "Minify your <abbr title='Cascading Style Sheets'>CSS</abbr> files",
+          "details": [
+            "Reading Systems don’t need spaces, tabs and comments for readability.",
+            "<a href='https://cssminifier.com'>Minify your <abbr title='Cascading Style Sheets'>CSS</abbr></a> so that its impact is the smallest possible."
+          ]
+        }
+      ]
+    },
+    {
+      "name": "fonts",
+      "skippable": false,
+      "heading": "Fonts",
+      "rules": [
+        {
+          "value": "drop",
+          "summary": "Consider dropping fonts which are not necessary",
+          "details": [
+            "Chances are users will pick the typeface they prefer in the settings. Is it really necessary to embed fonts for body copy then?"
+          ]
+        },
+        {
+          "value": "subset",
+          "summary": "Subset embedded fonts",
+          "details": [
+            "You probably don’t need all glyphs and characters so you could save some weight—for instance, <abbr title='Chinese, Japanese and Korean'>CJK</abbr> fonts can be 10&nbsp;<abbr title='Megabytes'>MB</abbr>!"
+          ]
+        },
+        {
+          "value": "stacks",
+          "summary": "Provide sensible font-stacks for your custom fonts",
+          "details": [
+            "This is all about preparing for the future.",
+            "Custom fonts slow down pages because they are additional resources.",
+            "Should <a href='https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display'><code>font-display</code> become the new standard</a> and Reading Systems be impacted, you’ll be covered."
+          ]
+        }
+      ]
+    },
+    {
+      "name": "images",
+      "skippable": false,
+      "heading": "Images",
+      "rules": [
+        {
+          "value": "format",
+          "summary": "Ensure the best format is used for each image",
+          "details": [
+            "<abbr title='Joint Photographic Experts Group'>JPEG</abbr>, <abbr title='Portable Network Graphics'>PNG</abbr> and <abbr title='Graphics Interchange Format'>GIF</abbr> all have their pros and cons.",
+            "If you don’t need transparency or gorgeous text rendering, why should you use <abbr title='Portable Network Graphics'>PNG</abbr>, which is usually bigger than <abbr title='Joint Photographic Experts Group'>JPEG</abbr>?",
+            "And maybe you don’t need more than 256 colors, which means <abbr title='Graphics Interchange Format'>GIF</abbr> could be the best option?",
+            "By carefully picking the best format for each image, you can save megabytes!"
+          ]
+        },
+        {
+          "value": "dimensions",
+          "summary": "Optimize dimensions",
+          "details": [
+            "Should a small decoration be 5 million pixels?"
+          ]
+        },
+        {
+          "value": "web",
+          "summary": "Save images for the web",
+          "details": [
+            "Photo editor apps usually ship with custom exports for the web; image’s loading and rendering can be quite expensive for some devices so take advantage of those exports."
+          ]
+        },
+        {
+          "value": "weight",
+          "summary": "Try to export images which are less than 300&nbsp;<abbr title='Kilobytes'>KB</abbr> and 3&nbsp;million pixels",
+          "details": [
+            "The lighter, the better… especially as older reading systems can’t cope with more than 300&nbsp;<abbr title='Kilobytes'>KB</abbr> and may crash.",
+            "Unfortunately, those older reading systems can’t reasonably cope with images which are more than 3&nbsp;millions pixels as well. So if you are targeting them, you’ll have to enforce this limit. Otherwise, it will take an awful amount of time to display them."
+          ]
+        },
+        {
+          "value": "optimizeImg",
+          "summary": "Optimize your images",
+          "details": [
+            "Export for the web is good but it’s not good enough. And that’s why utilities like <a href='https://imageoptim.com/mac'>ImageOptim</a>, <a href='https://github.com/mozilla/mozjpeg'>MozJPEG</a> or <a href='https://pngquant.org'>pngquant</a> are available.",
+            "Those utilities rely on powerful algorithms which can save a few more kilobytes."
+          ]
+        },
+        {
+          "value": "nightMode",
+          "summary": "Consider the rendering of your images in night mode",
+          "details": [
+            "Once again, prepare for the future.",
+            "Let’s imagine you don’t care about night mode and your images are unreadable. Then, Reading System developers will use <abbr title='Cascading Style Sheets'>CSS</abbr> filters…",
+            "Unfortunately, you can expect a <a href='https://davidwalsh.name/css-filters'>performance hit with heavy <abbr title='Cascading Style Sheets'>CSS</abbr> filter usage.</a>"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "svg",
+      "skippable": true,
+      "heading": "<abbr title='Scalable Vector Graphics'>SVG</abbr>",
+      "rules": [
+        {
+          "value": "SVG",
+          "summary": "Try to use <abbr title='Scalable Vector Graphics'>SVG</abbr> instead of images whenever possible",
+          "details": [
+            "<abbr title='Scalable Vector Graphics'>SVG</abbr> can scale and look great at any resolution. It doesn’t need 5 million pixels for outstanding rendering in fullscreen.",
+            "Also, they can be inlined in your HTML documents, which means you won’t need an additional request, unlike images."
+          ]
+        },
+        {
+          "value": "layers",
+          "summary": "Get rid of useless layers in your vector drawing app",
+          "details": [
+            "Dedicated apps tend to export stuff you don’t really need.",
+            "For instance, if you save as <abbr title='Scalable Vector Graphics'>SVG</abbr>, some apps will embed all artboards while you only need one.",
+            "Take that into account since there is no need for <abbr title='Extensible Markup Language'>XML</abbr> that won’t be visible in the <code>viewBox</code>."
+          ]
+        },
+        {
+          "value": "paths",
+          "summary": "Simplify paths",
+          "details": [
+            "The simpler your paths, the lighter your <abbr title='Extensible Markup Language'>XML</abbr>.",
+            "Let’s make it easier for the rendering engine!"
+          ]
+        },
+        {
+          "value": "styling",
+          "summary": "Take advantage of <abbr title='Cascading Style Sheets'>CSS</abbr>",
+          "details": [
+            "Some vector drawing apps will output basic shapes (<code>rect</code>, <code>circle</code>, <code>ellipse</code>, <code>polygon</code>, etc.) as paths, especially when borders are applied.",
+            "Now, you can style <abbr title='Scalable Vector Graphics'>SVG</abbr> with good old <abbr title='Cascading Style Sheets'>CSS</abbr>!",
+            "If you want to apply a border, you can just use <code>stroke</code> and <code>stroke-width</code>. As a result, your <abbr title='Scalable Vector Graphics'>SVG</abbr> will be a hell of a lot lighter and more readable."
+          ]
+        },
+        {
+          "value": "tspan",
+          "summary": "Consider text instead of vectors",
+          "details": [
+            "Want some text to follow a path?",
+            "You don’t need to vectorize that, which will result in a huge <abbr title='Scalable Vector Graphics'>SVG</abbr> file (one path for each letter).",
+            "You can declare <code>font-family</code> for this text using <abbr title='Cascading Style Sheets'>CSS</abbr>."
+          ]
+        },
+        {
+          "value": "optimizeSVG",
+          "summary": "Optimize <abbr title='Scalable Vector Graphics'>SVG</abbr>",
+          "details": [
+            "Chances are your vector drawing app output extraneous data you don’t really need.",
+            "Utilites like <a href='https://jakearchibald.github.io/svgomg/'>SVGO</a> can help reduce your <abbr title='Scalable Vector Graphics'>SVG</abbr> by half."
+          ]
+        }
+      ]
+    },
+    {
+      "name": "js",
+      "skippable": true,
+      "heading": "JavaScript",
+      "rules": [
+        {
+          "value": "budget",
+          "summary": "Create and follow a performance budget",
+          "details": [
+            "Reading Systems supporting JavaScript are themselves partly built using JavaScript, which means your <a href='https://timkadlec.com/2013/01/setting-a-performance-budget/'>performance budget</a> is pretty tight.",
+            "You’d better create a performance budget as low end devices will undoubtedly suffer."
+          ]
+        },
+        {
+          "value": "frameworks",
+          "summary": "Try to avoid frameworks and plugins",
+          "details": [
+            "Since Reading Systems are also often built using frameworks (Prototype, jQuery, etc.), the performance hit is quite significant before you even throw your own scripts in.",
+            "<a href='http://youmightnotneedjquery.com'>You might not need jQuery</a> and plugins are often used as mere shortcuts… You probably won’t use more than 10% of their features but you’ll impose their burden (weight) on users.",
+            "If you really need a framework to achieve something, consider a <a href='http://projects.jga.me/jquery-builder/'>custom subset.</a>"
+          ]
+        },
+        {
+          "value": "perf",
+          "summary": "Design your scripts with performance in mind",
+          "details": [
+            "Scripting is hard.",
+            "While browsers’ developers are doing their utmost to achieve good performance, providing hints to JavaScript engines can speed up the execution dramatically."
+          ]
+        },
+        {
+          "value": "docReady",
+          "summary": "Favor document ready",
+          "details": [
+            "The sooner, the better… (even if you’ll probably need a timeout because Reading Systems can be funky)."
+          ]
+        },
+        {
+          "value": "impact",
+          "summary": "Check the performance impact of your scripts (debug)",
+          "details": [
+            "You don’t want your scripts to screw everything up.",
+            "By profiling JavaScript in the browser, <a href='http://www.html5rocks.com/en/tutorials/speed/rendering/'>you’ll spot what creates jank.</a>"
+          ]
+        },
+        {
+          "value": "leaks",
+          "summary": "Ensure your scripts don’t create memory leaks",
+          "details": [
+            "<a href='https://auth0.com/blog/four-types-of-leaks-in-your-javascript-code-and-how-to-get-rid-of-them/'>Managing memory is mandatory</a>, especially as some mobile devices might be short on RAM.",
+            "Avoid creating accidental global variables, running unnecessary timers or keeping references that are not in the DOM anymore.",
+            "Garbage collection <abbr title='For The Win'>FTW</abbr>!"
+          ]
+        },
+        {
+          "value": "events",
+          "summary": "Avoid overriding Reading System’s default events",
+          "details": [
+            "You could accidentally fire a ton of events, which might have a performance impact (e.g. interactive ebooks for which rendering is an intensive task)."
+          ]
+        },
+        {
+          "value": "enhancement",
+          "summary": "Ensure your ebook works well if JavaScript is not supported",
+          "details": [
+            "What if a script is running in the background while the Reading System doesn’t even support the feature you’re relying upon? That would waste quite a lot of ressources, right?",
+            "Your scripts should be built around features, which means you <a href='http://www.html5rocks.com/en/tutorials/detection/'>detect those features first</a> and run the script accordingly.",
+            "And since “no JavaScript” is quite the standard in practice, you should consider scripting as a <a href='https://www.smashingmagazine.com/2009/04/progressive-enhancement-what-it-is-and-how-to-use-it/'>progressive enhancement.</a>",
+            "Don’t let users down because they can’t access the most advanced Reading Systems."
+          ]
+        },
+        {
+          "value": "externalJS",
+          "summary": "Use an external javascript file",
+          "details": [
+            "An external file will be cached, inline scripts won’t."
+          ]
+        },
+        {
+          "value": "minifyJS",
+          "summary": "Minify your <abbr title='JavaScript'>JS</abbr> files",
+          "details": [
+            "Reading Systems don’t need verbose functions, spaces and tabs for the sake of readability.",
+            "<a href='https://jscompress.com'>By using a compression tool</a>, you can probably reduce the size of your js files by half."
+          ]
+        }
+      ]
+    },
+    {
+      "name": "animations",
+      "skippable": true,
+      "heading": "Animations",
+      "rules": [
+        {
+          "value": "ux",
+          "summary": "Ensure animations are meaningful and improve <abbr title='User Experience'>UX</abbr>",
+          "details": [
+            "There’s nothing worse than useless animations impacting your performance budget because YOLO."
+          ]
+        },
+        {
+          "value": "cssAnims",
+          "summary": "Use <abbr title='Cascading Style Sheets'>CSS</abbr> instead of <abbr title='JavaScript'>JS</abbr> whenever possible",
+          "details": [
+            "This myth might have been busted for the web but… Reading Systems are a lot more constrained than web browsers.",
+            "It should be repeated for the benefit of everyone, Reading Systems are often built using JavaScript, which means it’s a good idea to use anything else than <abbr title='JavaScript'>JS</abbr> whenever possible."
+          ]
+        },
+        {
+          "value": "transforms",
+          "summary": "Avoid animating properties which affect layout and paint",
+          "details": [
+            "Browsers can animate transforms and <code>opacity</code> cheaply, this is not the case for properties like <code>width</code>, <code>top</code> or <code>background-image</code>.",
+            "Avoid properties affecting paint at any cost. Learn more at <a href='http://www.html5rocks.com/en/tutorials/speed/high-performance-animations/'>HTML5rocks</a>."
+          ]
+        },
+        {
+          "value": "controls",
+          "summary": "Try to provide users with controls (disabling, pausing, etc.)",
+          "details": [
+            "What if the user doesn’t even want to experience animations? You could save a lot of resources!",
+            "If you think about it for a second, controls might turn an unpleasing experience into a readable book, especially on low end devices.",
+            "And don’t forget <a href='http://a11yproject.com/posts/understanding-vestibular-disorders/'>this is an accessibility issue as well.</a>"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "qa",
+      "skippable": false,
+      "heading": "Quality Assurance",
+      "rules": [
+        {
+          "value": "devices",
+          "summary": "Check your ebook on various devices, from low to high end",
+          "details": [
+            "Let’s be honest, you just can’t <abbr title='Quality Assurance'>QA</abbr> your ebook file on a brand new iPhone/iPad and call it a day… A lot of people are using less capable devices in real life.",
+            "You should at least test your ebook on a $200 Android device and a good old eInk Reader if you want to provide users with the best possible experience."
+          ]
+        },
+        {
+          "value": "rendering",
+          "summary": "Check if there is no rendering issue with your custom fonts",
+          "details": [
+            "Users wait extra seconds for contents to load only to see custom fonts are completely screwed up.",
+            "How would you feel about that as a user?"
+          ]
+        },
+        {
+          "value": "settings",
+          "summary": "Change user settings to make sure everything is OK",
+          "details": [
+            "Reading Systems sometimes reload the whole document to change <code>font-family</code>, <code>font-size</code>, etc.",
+            "Check if your ebook file doesn’t contain bottlenecks slowing user settings down."
+          ]
+        },
+        {
+          "value": "bloat",
+          "summary": "Consider the size of your EPUB&nbsp;file",
+          "details": [
+            "Sure, ebookStores set an upper limit but does it mean you should publish a 650&nbsp;MB or 2&nbsp;GB file?",
+            "The bigger your EPUB file, the harder some Reading Systems may fall.",
+            "And it’s a User eXperience issue as well: this will probably take forever to download then bloat the user’s device, etc. Don’t forget a lot of Android devices out there currently ship with just 8–16&nbsp;GB of storage."
+          ]
+        }
+      ]
+    }
+  ],
+  "footer": [
+    "<a href='https://github.com/FriendsOfEpub/eBookPerfChecklist/blob/master/LICENSE'>LGPLv3 Licence</a> | <a href='https://github.com/FriendsOfEpub/eBookPerfChecklist'>Source</a>",
+    "This tool is part of the <a href='https://github.com/FriendsOfEpub/Blitz'>Blitz ebook Framework</a>"
+  ]
+}

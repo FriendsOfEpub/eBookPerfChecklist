@@ -4,11 +4,12 @@
   padding: 0;
 }
 
-html, body {
+html,
+body {
   margin: 0;
   padding: 0;
 }
-  
+
 * {
   background: none !important;
   color: #222 !important;
@@ -39,11 +40,9 @@ h1 {
   position: absolute;
   top: -16pt;
   right: 0;
-  -webkit-transform-origin: 100% 100%;
   transform-origin: 100% 100%;
-  -webkit-transform: rotate(270deg);
   transform: rotate(270deg);
-  display: inline-block;							
+  display: inline-block;
 }
 
 h1:after {
@@ -85,14 +84,14 @@ form section:first-child {
   padding: 0;
   max-width: none;
 }
-  
+
 label {
   margin: 10pt 0 0 0;
   padding-left: 20pt;
   font-size: 10pt;
   line-height: 1.2;
 }
-  
+
 .checker {
   width: 12pt;
   height: 12pt;
@@ -100,6 +99,6 @@ label {
   border-radius: 0;
 }
 
-input:checked + .checker {
+input:checked+.checker {
   background-color: none !important;
 }
