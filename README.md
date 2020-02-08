@@ -16,10 +16,10 @@ A progressive web app to help you boost eBook performance
 
 **If you’re using a keyboard:**
 
-- press “tab” to navigate items
-- press “enter” to check
-- press “space” to display details
-- press “esc” to reset the checklist
+- press “tab” to navigate items;
+- press “enter” to check;
+- press “space” to display details;
+- press “esc” to reset the checklist.
 
 Don’t worry, your checklist is autosaved: you can close this website, your current checklist will be retrieved when reopened.
 
@@ -33,7 +33,7 @@ Thanks to service workers, it will even work offline on Android, Chrome, Opera o
 
 The eBook Performance Checklist is part of the Blitz Project. It’s a progressive web app which aim is to help you boost your eBooks’ performance.
 
-It is currently in v.2.0.1 and available [on this page](https://friendsofepub.github.io/eBookPerfChecklist/).
+It is available [on this page](https://friendsofepub.github.io/eBookPerfChecklist/).
 
 ## Details
 
