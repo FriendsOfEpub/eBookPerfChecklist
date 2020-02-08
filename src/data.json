@@ -1,6 +1,6 @@
 {
   "appName": "BlitzOptim",
-  "appVersion": "2.0.1",
+  "appVersion": "2.1.0",
   "appDesc": "A checklist app that helps you design more performant ebooks.",
   "appLogo": "assets/logo.svg",
   "appScope": "/eBookPerfChecklist/",
