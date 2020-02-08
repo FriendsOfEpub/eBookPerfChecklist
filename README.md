@@ -8,10 +8,11 @@ A progressive web app to help you boost eBook performance
 
 **If you’re using a mouse/touch:**
 
-- click the checkbox to check
-- click the label to display details
-- click the “Thanks button” if you don’t need SVG, JS or animations
-- click reset to… reset the checklist
+- click the “Expand/Collapse button” to toggle all details;
+- click the label to display details;
+- click the checkbox to check;
+- click the “Skip Section” button if the section doesn’t apply;;
+- click reset to… reset the checklist.
 
 **If you’re using a keyboard:**
 
